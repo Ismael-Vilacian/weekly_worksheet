@@ -1,0 +1,39 @@
+Table curso {
+  id integer [primary key]
+  nome varchar
+  carga_horaria integer
+}
+
+Table disciplina {
+  id integer [primary key]
+  nome varchar
+  carga_horaria integer
+  curso_id integer [ref: > curso.id]
+}
+
+Table professor {
+  id integer [primary key]
+  nome varchar
+}
+
+Table disponibilidade {
+  id integer [primary key]
+  professor_id integer [ref: > professor.id]
+  dia_semana varchar
+}
+
+Table horario {
+  id integer [primary key]
+  dia_semana varchar
+  hora_inicio time
+  hora_fim time
+}
+
+Table aula {
+  id integer [primary key]
+  disciplina_id integer [ref: > disciplina.id]
+  horario_id integer [ref: > horario.id]
+  professor_id integer [ref: > professor.id]
+}
+
+dbdiagram.io
