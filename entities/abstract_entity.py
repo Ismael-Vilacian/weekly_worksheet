@@ -23,23 +23,21 @@ class AbstractEntity(ABC):
 
     def table_exists(self):
         return self.database_controller.table_exists(self.table_name())
-
-    def map_properties(self, use_id=False):
-        instance = AbstractEntity()
-        property = ""
-        for property, value in vars(instance).items():
-            if use_id and property == 'id':
-                continue
-            property += f"{property}, "
-
-        return property[:-2]
     
-    def map_values_properties(self, use_id=False):
-        instance = AbstractEntity()
-        property = ""
-        for property, value in vars(instance).items():
-            if use_id and property == 'id':
+    def map_properties(self, use_id=False):
+        properties = ""
+        for property, value in vars(self).items():
+            if use_id is False and property == 'id':
                 continue
-            property += f"{value}, "
+            properties += f"{property}, "
 
-        return property[:-2]
+        return properties[:-2]
+
+    def map_values_properties(self, use_id=False):
+        values = ""
+        for property, value in vars(self).items():
+            if use_id is False and property == 'id':
+                continue
+            values += f"{value}, "
+
+        return values[:-2]

@@ -1,7 +1,6 @@
-from database_controller import database
 
-database_controller = database()
+from entities.curso import Curso
 
-database_controller.create_table('id INTEGER PRIMARY KEY, nome TEXT NOT NULL, idade INTEGER', 'clientes')
+curso = Curso(0, "Curso de Pyton", 40)
 
-database_controller.add_item("'John Doe', 30", 'nome, idade', 'clientes')
+curso.add_item()
