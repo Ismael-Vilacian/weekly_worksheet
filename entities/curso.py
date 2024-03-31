@@ -8,6 +8,9 @@ class Curso(AbstractEntity):
         self.descricao = descricao
         self.database_controller = database()
     
+    def table_name(self):
+        return 'Curso'
+    
 
 # Exemplo de uso:
 # Curso.create_table()
