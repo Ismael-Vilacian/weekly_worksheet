@@ -8,10 +8,9 @@ class Curso(AbstractEntity):
         self.descricao = descricao
         self.database_controller = database()
         self.carga_horaria = carga_horaria
+
+        if self.table_exists() is False:
+            self.create_table()
     
     def table_name(self):
         return 'Curso'
-    
-
-# Exemplo de uso:
-# Curso.create_table()

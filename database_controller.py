@@ -7,10 +7,7 @@ class database:
     def create_table(self, table_data, table_name):
         c = self.conexao.cursor()
 
-        sql_create_table = f'''
-            CREATE TABLE IF NOT EXISTS {table_name} (
-                {table_data}
-            );'''
+        sql_create_table = f'''CREATE TABLE IF NOT EXISTS {table_name} ({table_data})'''
 
         c.execute(sql_create_table)
         self.conexao.commit()
@@ -19,10 +16,7 @@ class database:
     def add_item(self, table_data, item_table, table_name):
         c = self.conexao.cursor()
 
-        sql_add_item = f'''
-        INSERT INTO {table_name} ({item_table})
-        VALUES ({table_data});
-        '''
+        sql_add_item = f'''INSERT INTO {table_name} ({item_table}) VALUES ({table_data})'''
         c.execute(sql_add_item)
         self.conexao.commit()
         c.close()
