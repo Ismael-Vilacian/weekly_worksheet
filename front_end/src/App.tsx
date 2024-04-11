@@ -6,9 +6,9 @@ function App() {
     <div className="App">
       <RenderContainer>
         <button onClick={async () => {
-          fetch('https://httpbin.org/get')
-            .then(response => { debugger
-              console.log(response)
+          fetch('https://zany-doodle-jwg5j7w769fg79-8000.app.github.dev/curso/',  { mode: 'no-cors' })
+            .then(response => { 
+              console.log(response);
             })
             .catch(console.log);
         }}>Clique aqui</button>
