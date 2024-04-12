@@ -40,6 +40,7 @@
   min-width: 90px;
   text-align: center;
   padding-top: 30px;
+  text-decoration: none;
 }
 
 #root .menu-bar .menu-bar_actions .menu-bar_action:hover {
