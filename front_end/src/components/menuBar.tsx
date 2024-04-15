@@ -1,6 +1,7 @@
 import React from "react";
 import logo from "../assets/images/logo.png";
-import { FloatingMenu } from "./floatingMenu.tsx";
+import { Link } from "react-router-dom";
+// import { FloatingMenu } from "./floatingMenu.tsx";
 
 
 export class MenuBar extends React.Component {
@@ -12,10 +13,10 @@ export class MenuBar extends React.Component {
                     <img width={152} src={logo} alt="logo" />
                 </div>
                 <div className="menu-bar_actions">
-                    <div className="menu-bar_action menu-bar_action-select">
+                    <Link to="home" className="menu-bar_action menu-bar_action-select">
                         Inicio
-                        <FloatingMenu data={[{description: 'Teste', link: 'home'}]} render={true} />
-                    </div>
+                        {/* <FloatingMenu data={[{description: 'Teste', link: 'home'}]} render={true} /> */}
+                    </Link>
                     <div className="menu-bar_action">Cadastros</div>
                     <div className="menu-bar_action">Relatórios</div>
                 </div>
