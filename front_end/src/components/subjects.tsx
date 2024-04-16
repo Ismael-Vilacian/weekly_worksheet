@@ -1,4 +1,5 @@
 import React from "react";
+import { Schedules } from "./schedules.tsx";
 
 interface PropsSubjects {
     data: any;
@@ -10,25 +11,19 @@ export class Subjects extends React.Component<PropsSubjects> {
         const { data } = this.props;
 
         return (
-            <div>
+            <div className="subjects">
                 {data.disciplinas.map((disciplina: any) => {
                     return (
-                        <div>
-                            <div>
-                                <div>
+                        <div className="subjects_container">
+                            <div className="subjects_description-action">
+                                <div className="subjects_description">
                                     {disciplina.descricao}
-                                    <div>{disciplina.professor}</div>
+                                    <div className="subjects_teacher">{disciplina.professor}</div>
                                 </div>
-                                <div>editar</div>
+                                <div className="subjects_action">editar</div>
                             </div>
 
-                            <div>
-                                {disciplina.diasLetivos.map((dia: any) => {
-                                    return (
-                                        <div>{dia.dia}</div>
-                                    );
-                                })}
-                            </div>
+                           <Schedules data={disciplina} />
                         </div>
                     );
                 })}

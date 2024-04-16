@@ -11,11 +11,11 @@ export class Courses extends React.Component<PropsCourses> {
         const { data } = this.props;
 
         return (
-          <div>
+          <div className="courses">
             {data.map((curso: any) => {
                     return (
-                        <div className="cursos">
-                            <div className="cursos_descricao">{curso.descricao}</div>
+                        <div className="courses_container">
+                            <div className="courses_description">{curso.descricao}</div>
 
                             <Subjects data={curso} />
                         </div>

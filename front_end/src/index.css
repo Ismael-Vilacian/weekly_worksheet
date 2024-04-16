@@ -58,3 +58,86 @@
 #root .menu-bar .menu-bar_actions .menu-bar_action:not(:last-child) {
   margin-right: 20px;
 }
+
+.page {
+  padding: 42px 20px 20px 20px;
+}
+
+.chip {
+  border-radius: 13px;
+  border: 1px solid #CFCFCF;
+  background: #FFF;
+  width: max-content;
+  padding: 3px 10px;
+  color: #6D8798;
+  font-size: 14px;
+  font-weight: 400;
+}
+
+.schedules .schedules_tabs {
+  display: flex;
+  height: 24px;
+  border-bottom: 1px solid #CFCFCF;
+  margin-bottom: 10px;
+  padding-bottom: 2px;
+  font-size: 14px;
+  font-weight: 500;
+  color: black;
+}
+
+.schedules .schedules_tabs .schedules_tab {
+  cursor: pointer;
+}
+
+.schedules .schedules_tabs .schedules_tab-selected {
+  color: #9D1113;
+  font-weight: 700;
+}
+
+.schedules .schedules_tabs .schedules_tab:not(:last-child) {
+  margin-right: 15px;
+}
+
+.subjects {
+  border-radius: 8px;
+  border: 1px solid #CFCFCF;
+  background: #FFF;
+  padding: 20px;
+  min-width: 394px;
+  width: max-content;
+}
+
+.subjects .subjects_container .subjects_description-action {
+  display: flex;
+  justify-content: space-between;
+}
+
+.subjects .subjects_container .subjects_description-action .subjects_action {
+  color: #A3C2D6;
+  cursor: pointer;
+}
+
+.subjects .subjects_container .subjects_description-action .subjects_action:hover {
+  color: #9D1113 !important;
+}
+
+.subjects .subjects_container .subjects_description-action .subjects_description {
+  color: black;
+  font-size: 16px;
+  font-weight: 500;
+  margin-bottom: 16px;
+}
+
+.subjects .subjects_container .subjects_description-action .subjects_description .subjects_teacher {
+  color: #6D8798;
+  font-size: 14px;
+}
+
+.courses .courses_container .courses_description {
+  color: black;
+  font-size: 18px;
+  font-weight: 600;
+  padding-bottom: 17px;
+  border-bottom: 1px solid #CFCFCF;
+  margin-bottom: 22px;
+}
