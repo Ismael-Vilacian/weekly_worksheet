@@ -1,10 +1,10 @@
 import React from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import { RenderContainer } from './components/renderContainer.tsx';
-import { MenuBar } from './components/menuBar.tsx';
 import { Home } from './pages/home.tsx';
 import { Register } from './pages/register.tsx';
 import { Reports } from './pages/reports.tsx';
+import MenuBar from './components/menuBar.tsx';
 
 
 function App() {

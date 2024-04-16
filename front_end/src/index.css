@@ -43,6 +43,7 @@
   text-align: center;
   padding-top: 30px;
   text-decoration: none;
+  position: relative;
 }
 
 #root .menu-bar .menu-bar_actions .menu-bar_action:hover {
@@ -59,6 +60,28 @@
 
 #root .menu-bar .menu-bar_actions .menu-bar_action:not(:last-child) {
   margin-right: 20px;
+}
+
+.floating-menu {
+  position: absolute;
+  min-width: 188px;
+  min-height: 171px;
+  border-radius: 4px;
+  border: 1px solid #E6E8EC;
+  background: #FFF;
+  box-shadow: 2px 3px 5px 0px rgba(0, 0, 0, 0.40);
+  left: 0;
+  top: 60px;
+}
+
+.floating-menu .floating-menu_item {
+  min-width: 188px !important;
+  height: 57px;
+  color: #353945;
+  font-size: 14px;
+  font-weight: 600;
+  text-transform: none;
+  text-align: initial;
 }
 
 .page {
