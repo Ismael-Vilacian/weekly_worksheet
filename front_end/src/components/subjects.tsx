@@ -20,7 +20,7 @@ export class Subjects extends React.Component<PropsSubjects> {
                                     {disciplina.descricao}
                                     <div className="subjects_teacher">{disciplina.professor}</div>
                                 </div>
-                                <div className="subjects_action">editar</div>
+                                <div className="subjects_action"><i className="bi bi-pencil-square"></i></div>
                             </div>
 
                            <Schedules data={disciplina} />
