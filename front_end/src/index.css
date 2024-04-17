@@ -204,3 +204,15 @@ body {
   font-weight: 400;
   margin-top: 8px;
 }
+
+.header {
+  height: 41px;
+  border-bottom: 1px solid #CFCFCF;
+  margin-bottom: 34px;
+}
+
+.header .header_description {
+  color: black;
+  font-size: 18px;
+  font-weight: 600;
+}

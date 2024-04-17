@@ -5,6 +5,7 @@ import { Home } from './pages/home.tsx';
 import { Register } from './pages/register.tsx';
 import { Reports } from './pages/reports.tsx';
 import MenuBar from './components/menuBar.tsx';
+import { RegisterCourse } from './pages/registerCourse.tsx';
 
 
 function App() {
@@ -14,7 +15,9 @@ function App() {
         <MenuBar />
         <RenderContainer>
           <Routes>
+            <Route path="/" element={<Home />} />
             <Route path="/home" element={<Home />} />
+            <Route path="/register-course" element={<RegisterCourse />} />
             <Route path="/register" element={<Register />} />
             <Route path="/reports" element={<Reports />} />
           </Routes>
