@@ -1,6 +1,9 @@
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@100..900&display=swap');
 @import "bootstrap-icons/font/bootstrap-icons.css";
 
+body {
+  height: 100vh;
+}
 
 * {
   margin: 0;
@@ -11,6 +14,7 @@
 #root .App {
   max-width: 1280px;
   margin: 0 auto;
+  height: 100vh;
 }
 
 #root .menu-bar {
@@ -72,16 +76,25 @@
   box-shadow: 2px 3px 5px 0px rgba(0, 0, 0, 0.40);
   left: 0;
   top: 60px;
+  z-index: 2;
 }
 
 .floating-menu .floating-menu_item {
   min-width: 188px !important;
-  height: 57px;
+  height: 22px;
+  display: inline-block;
   color: #353945;
   font-size: 14px;
   font-weight: 600;
   text-transform: none;
+  border-bottom: 1px solid #E4E4E4;
   text-align: initial;
+  text-decoration: none;
+  padding: 18px 15px;
+}
+
+.floating-menu .floating-menu_item:hover {
+  background: linear-gradient(52deg, #b52d2d26, #30706e00);
 }
 
 .page {

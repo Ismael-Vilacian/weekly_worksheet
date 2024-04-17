@@ -1,23 +1,35 @@
 import React, { useState } from "react";
 import logo from "../assets/images/logo.png";
 import { Link } from "react-router-dom";
-import { FloatingMenu } from "./floatingMenu.tsx";
+import FloatingMenu from "./floatingMenu.tsx";
 
 const MenuBar: React.FC = () => {
     const [renderMenuRegister, setRenderMenuRegister] = useState(false);
-        
+    const [renderMenuReports, setrenderMenuReports] = useState(false);
+
+    const renderMenuController = (render: any, setRender: any) => {
+        setRenderMenuRegister(false);
+        setrenderMenuReports(false);
+        if (render != null && setRender != null) {
+            setRender(!render)
+        }
+    }
+
     return (
         <div className="menu-bar">
             <div className="menu-bar_logo">
                 <img width={152} src={logo} alt="logo" />
             </div>
             <div className="menu-bar_actions">
-                <Link to="home" className="menu-bar_action menu-bar_action-select">Inicio</Link>
-                <div onClick={() => setRenderMenuRegister(!renderMenuRegister)} className="menu-bar_action">
+                <Link onClick={() => renderMenuController(null, null)} to="home" className="menu-bar_action menu-bar_action-select">Inicio</Link>
+                <div onClick={() => renderMenuController(renderMenuRegister, setRenderMenuRegister)} className="menu-bar_action">
                     Cadastros
-                    <FloatingMenu data={[{description: 'Teste', link: 'home'}]} render={renderMenuRegister} />    
+                    <FloatingMenu data={[{ description: 'Teste', link: 'home' }]} render={renderMenuRegister} setData={setRenderMenuRegister} />
                 </div>
-                <div className="menu-bar_action">Relatórios</div>
+                <div onClick={() => renderMenuController(renderMenuReports, setrenderMenuReports)} className="menu-bar_action">
+                    Relatórios
+                    <FloatingMenu data={[{ description: 'Teste', link: 'home' }]} render={renderMenuReports} setData={setrenderMenuReports} />
+                </div>
             </div>
             <div></div>
         </div>
