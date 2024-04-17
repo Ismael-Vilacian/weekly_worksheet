@@ -179,3 +179,28 @@ body {
   border-bottom: 1px solid #CFCFCF;
   margin-bottom: 22px;
 }
+
+.no-data {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  margin-top: 25vh;
+}
+
+.no-data .no-data_img {
+  max-width: 118px;
+}
+
+.no-data .no-data_title {
+  color: #4A687B;
+  font-size: 15px;
+  font-weight: 600;
+}
+
+.no-data .no-data_description {
+  color: #6D8798;
+  font-size: 14px;
+  font-weight: 400;
+  margin-top: 8px;
+}
