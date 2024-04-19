@@ -30,3 +30,10 @@ class database:
         c.close()
 
         return table is not None
+    
+    def custom_script(self, script):
+        c = self.conexao.cursor()
+
+        c.execute(script)
+        self.conexao.commit()
+        c.close()
