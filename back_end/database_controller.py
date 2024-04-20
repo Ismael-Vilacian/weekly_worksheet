@@ -37,3 +37,37 @@ class database:
         c.execute(script)
         self.conexao.commit()
         c.close()
+
+    def get_data(self, table_name):
+        c = self.conexao.cursor()
+
+        c.execute(f'''SELECT * FROM {table_name};''')
+        data = c.fetchall()
+
+        c.close()
+
+        return data
+    
+    def get_data_by_id(self, table_name, id):
+        c = self.conexao.cursor()
+
+        c.execute(f'''SELECT * FROM {table_name} WHERE id = {id};''')
+        data = c.fetchall()
+
+        c.close()
+
+        return data
+
+    def put_data(self, table_name, data):
+        c = self.conexao.cursor()
+
+        c.execute(f'''UPDATE {table_name} SET {data};''')
+        self.conexao.commit()
+        c.close()
+    
+    def delete_data(self, table_name, id):
+        c = self.conexao.cursor()
+
+        c.execute(f'''DELETE FROM {table_name} WHERE id = {id};''')
+        self.conexao.commit()
+        c.close()
