@@ -1,4 +1,6 @@
 
+
+
 from database_controller import database
 
 #Tabela curso

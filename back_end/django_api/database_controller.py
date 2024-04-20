@@ -1,8 +1,10 @@
+import os
 import sqlite3
 
 class database:
     def __init__(self):
-        self.conexao = sqlite3.connect('banco.db')
+        db_path = os.path.join(os.path.dirname(os.path.realpath(__file__)), 'banco.db')
+        self.conexao = sqlite3.connect(db_path)
 
     def create_table(self, table_data, table_name):
         c = self.conexao.cursor()

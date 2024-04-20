@@ -5,7 +5,7 @@ import { Home } from './pages/home.tsx';
 import { Register } from './pages/register.tsx';
 import { Reports } from './pages/reports.tsx';
 import MenuBar from './components/menuBar.tsx';
-import { RegisterCourse } from './pages/registerCourse.tsx';
+import RegisterCourse from './pages/registerCourse.tsx';
 
 
 function App() {

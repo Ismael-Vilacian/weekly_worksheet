@@ -1,13 +1,4 @@
-import React, { useState, useEffect } from "react";
-
-interface InputMultiSelectProps {
-    dados: any;
-    placeholder?: string;
-    itensSelecionados?: any[];
-    change: (item: any) => void;
-    propriedade: string;
-    disabled?: boolean;
-}
+import React, { useState, useEffect } from "react"; 
 
 const InputMultiSelect: React.FC<InputMultiSelectProps> = ({ dados, placeholder = "", itensSelecionados, change: change, propriedade, disabled = false, }) => {
     const [isOpen, setIsOpen] = useState(false);
@@ -24,7 +15,7 @@ const InputMultiSelect: React.FC<InputMultiSelectProps> = ({ dados, placeholder 
     };
 
     const eventClickCloseDropdown = () => {
-        const app: any = document.querySelector('#eduq-app');
+        const app: any = document.querySelector('.App');
 
         const handleClickEvent = (event: any) => {
             if (event) {
@@ -109,7 +100,7 @@ const InputMultiSelect: React.FC<InputMultiSelectProps> = ({ dados, placeholder 
         }
 
         const dataSelected = dados.filter((m: any) => m.selecionado);
-
+        
         setCompleteObject(dados);
         setDadosState(dados);
         setItens(dataSelected);
@@ -153,9 +144,9 @@ const InputMultiSelect: React.FC<InputMultiSelectProps> = ({ dados, placeholder 
                         </li>
                     }
 
-                    {(!dadosState || dadosState.length) === 0 &&
+                    {(!dadosState || dadosState.length === 0) &&
                         <li>
-                            <i className="fas fa-ban"></i>
+                            <i className="bi bi-ban"></i>
                             Nenhum item encontrado
                         </li>
                     }
@@ -171,5 +162,14 @@ const InputMultiSelect: React.FC<InputMultiSelectProps> = ({ dados, placeholder 
         </div>
     );
 };
+
+interface InputMultiSelectProps {
+    dados: any;
+    placeholder?: string;
+    itensSelecionados?: any[];
+    change: (item: any) => void;
+    propriedade: string;
+    disabled?: boolean;
+}
 
 export default InputMultiSelect;

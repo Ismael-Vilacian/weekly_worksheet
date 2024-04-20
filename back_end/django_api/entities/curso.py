@@ -1,4 +1,4 @@
-from database_controller import database
+from back_end.django_api.database_controller import database
 from entities.abstract_entity import AbstractEntity
 
 class Curso(AbstractEntity):
