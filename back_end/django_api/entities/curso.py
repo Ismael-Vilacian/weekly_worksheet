@@ -1,5 +1,5 @@
-from back_end.django_api.database_controller import database
-from entities.abstract_entity import AbstractEntity
+from database_controller import database
+from .abstract_entity import AbstractEntity
 
 class Curso(AbstractEntity):
     def __init__(self, id, descricao, carga_horaria):
@@ -14,3 +14,10 @@ class Curso(AbstractEntity):
     
     def table_name(self):
         return 'Curso'
+    
+    def to_dict(self):
+        return {
+            'id': self.id,
+            'descricao': self.descricao,
+            'carga_horaria': self.carga_horaria
+        }

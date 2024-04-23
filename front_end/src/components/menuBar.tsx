@@ -24,7 +24,13 @@ const MenuBar: React.FC = () => {
                 <Link onClick={() => renderMenuController(null, null)} to="home" className="menu-bar_action menu-bar_action-select">Inicio</Link>
                 <div onClick={() => renderMenuController(renderMenuRegister, setRenderMenuRegister)} className="menu-bar_action">
                     Cadastros
-                    <FloatingMenu data={[{ description: 'Curso', link: 'register-course' }]} render={renderMenuRegister} setData={setRenderMenuRegister} />
+                    <FloatingMenu data={
+                        [
+                            { description: 'Curso', link: 'register-course' },
+                            { description: 'Disciplina', link: 'register-discipline' },
+                            { description: 'Horário', link: 'register-time' },
+                            { description: 'Professor', link: 'register-teacher' }
+                        ]} render={renderMenuRegister} setData={setRenderMenuRegister} />
                 </div>
                 <div onClick={() => renderMenuController(renderMenuReports, setrenderMenuReports)} className="menu-bar_action">
                     Relatórios

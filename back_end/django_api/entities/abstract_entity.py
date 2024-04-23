@@ -1,5 +1,5 @@
 from abc import ABC, abstractmethod
-from back_end.django_api.database_controller import database
+from database_controller import database
 
 class AbstractEntity(ABC):
     def __init__(self):

@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react"; 
+import React, { useState, useEffect } from "react";
 
 const InputMultiSelect: React.FC<InputMultiSelectProps> = ({ dados, placeholder = "", itensSelecionados, change: change, propriedade, disabled = false, }) => {
     const [isOpen, setIsOpen] = useState(false);
@@ -58,7 +58,7 @@ const InputMultiSelect: React.FC<InputMultiSelectProps> = ({ dados, placeholder 
     useEffect(() => {
         adjustmentsData(dados, itensSelecionados, isOpen);
         change(itensSelecionados);
-    }, []);
+    }, [dados]);
 
     const handleItemClick = (item: any) => {
         if (!completeObject) return;
@@ -100,7 +100,7 @@ const InputMultiSelect: React.FC<InputMultiSelectProps> = ({ dados, placeholder 
         }
 
         const dataSelected = dados.filter((m: any) => m.selecionado);
-        
+
         setCompleteObject(dados);
         setDadosState(dados);
         setItens(dataSelected);
@@ -119,10 +119,10 @@ const InputMultiSelect: React.FC<InputMultiSelectProps> = ({ dados, placeholder 
 
                 <div className="arrow-icon">
                     <span className={!isOpen ? 'arrow-icon-active' : 'arrow-icon-inactive'}>
-                        <i className="fas fa-chevron-down"></i>
+                        <i className="bi bi-chevron-down"></i>
                     </span>
                     <span className={isOpen ? 'arrow-icon-active' : 'arrow-icon-inactive'}>
-                        <i className="fas fa-chevron-up"></i>
+                        <i className="bi bi-chevron-up"></i>
                     </span>
                 </div>
             </div>
