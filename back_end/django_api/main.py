@@ -5,7 +5,7 @@ from database_controller import database
 
 #Tabela curso
 cursos = '''CREATE TABLE IF NOT EXISTS curso (
-  id INTEGER PRIMARY KEY,
+  id INTEGER PRIMARY KEY AUTOINCREMENT,
   nome VARCHAR,
   carga_horaria INTEGER
 );'''
@@ -13,8 +13,8 @@ cursos = '''CREATE TABLE IF NOT EXISTS curso (
 #Tabela disciplina
 
 disciplinas = '''
-    CREATE TABLE IF NOT EXISTS disciplina (
-  id INTEGER PRIMARY KEY,
+CREATE TABLE IF NOT EXISTS disciplina (
+  id INTEGER PRIMARY KEY AUTOINCREMENT,
   nome VARCHAR,
   carga_horaria INTEGER
 );
@@ -23,7 +23,7 @@ disciplinas = '''
 #Tabela gradeHorario
 grade_horario = '''
 CREATE TABLE IF NOT EXISTS gradeHorario (
-  id INTEGER PRIMARY KEY,
+  id INTEGER PRIMARY KEY AUTOINCREMENT,
   descricao VARCHAR
 );
 '''
@@ -31,7 +31,7 @@ CREATE TABLE IF NOT EXISTS gradeHorario (
 #Tabela horario
 horario = '''
 CREATE TABLE IF NOT EXISTS horario (
-  id INTEGER PRIMARY KEY,
+  id INTEGER PRIMARY KEY AUTOINCREMENT,
   inicio TIME,
   fim TIME,
   gradeHorarioId INTEGER REFERENCES gradeHorario(id),
@@ -42,7 +42,7 @@ CREATE TABLE IF NOT EXISTS horario (
 #Tabela cursoDisciplina
 curso_disciplina = '''
 CREATE TABLE IF NOT EXISTS cursoDisciplina (
-  id INTEGER PRIMARY KEY,
+  id INTEGER PRIMARY KEY AUTOINCREMENT,
   cursoId INTEGER REFERENCES curso(id),
   disciplinaId INTEGER REFERENCES disciplina(id),
   UNIQUE (cursoId, disciplinaId)
@@ -52,7 +52,7 @@ CREATE TABLE IF NOT EXISTS cursoDisciplina (
 #Tabela professor
 professor = '''
 CREATE TABLE IF NOT EXISTS professor (
-  id INTEGER PRIMARY KEY,
+  id INTEGER PRIMARY KEY AUTOINCREMENT,
   nome VARCHAR
 );
 '''
@@ -60,7 +60,7 @@ CREATE TABLE IF NOT EXISTS professor (
 #Tabela aula
 aula = '''
 CREATE TABLE IF NOT EXISTS aula (
-  id INTEGER PRIMARY KEY,
+  id INTEGER PRIMARY KEY AUTOINCREMENT,
   disciplinaId INTEGER REFERENCES cursoDisciplina(id),
   professorId INTEGER REFERENCES professor(id),
   horarioId INTEGER REFERENCES horario(id),
@@ -72,7 +72,7 @@ CREATE TABLE IF NOT EXISTS aula (
 #Tabela disponibilidade
 disponibilidade = '''
 CREATE TABLE IF NOT EXISTS disponibilidade (
-  id INTEGER PRIMARY KEY,
+  id INTEGER PRIMARY KEY AUTOINCREMENT,
   professorId INTEGER REFERENCES professor(id),
   diaSemana VARCHAR,
   horarioId INTEGER REFERENCES horario(id),

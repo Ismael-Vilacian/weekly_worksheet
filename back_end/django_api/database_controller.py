@@ -49,6 +49,17 @@ class database:
         c.close()
 
         return data
+
+    def set_data(self, table_name, data, colums = ""):
+        c = self.conexao.cursor()
+
+        c.execute(f'''INSERT INTO {table_name} {colums} VALUES ({data});''')
+        self.conexao.commit()
+        last_id = c.lastrowid
+
+        c.close()
+
+        return last_id
     
     def get_data_by_id(self, table_name, id):
         c = self.conexao.cursor()

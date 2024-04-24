@@ -17,6 +17,28 @@ const RegisterCourse: React.FC = () => {
             .catch(console.log);
     }, []);
 
+    const saveCourse = () => {
+        const inputNome: any = document.querySelector('input[name="course_name"]');
+        const inputHour: any = document.querySelector('input[name="hour_name"]');
+
+        const data = {
+            descricao: inputNome.value,
+            carga_horaria: inputHour.value,
+            disciplinas: selectedDisciplines
+        }
+
+        let url = 'https://shiny-sniffle-rwx644pwx4vcprqg-8000.app.github.dev/set-course/';
+        fetch(url, {
+            method: 'POST', 
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(data) 
+        })
+        .then(data => console.log(data))
+        .catch(console.log);
+    }
+
     return (
         <div className="page">
             <Header description="Cadastro de curso" />
@@ -34,7 +56,7 @@ const RegisterCourse: React.FC = () => {
             </div>
 
             <div style={{textAlign: 'center'}}>
-                <button className="button-default">Salvar alterações</button>
+                <button onClick={saveCourse} className="button-default">Salvar alterações</button>
             </div>
         </div>
     );
