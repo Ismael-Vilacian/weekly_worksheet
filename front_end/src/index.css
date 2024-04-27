@@ -15,6 +15,7 @@ body {
   max-width: 1280px;
   margin: 0 auto;
   height: 100vh;
+  position: relative;
 }
 
 #root .menu-bar {
@@ -499,4 +500,35 @@ body {
   100% {
     opacity: 0.5;
   }
+}
+
+.alert {
+  width: 440px;
+  min-height: 21px;
+  border-radius: 3px;
+  font-size: 16px;
+  position: absolute;
+  right: 0px;
+  top: 20px;
+  padding: 12px;
+  display: flex;
+  justify-content: space-between;
+  font-weight: 600;
+  cursor: pointer;
+  display: none;
+}
+
+.alert-success {
+  background: #E7F6D5;
+  color: #689F38;
+}
+
+.alert-failure {
+  background: #FFDDE0;
+  color: #D32F2F;
+}
+
+.alert-alert {
+  background: #FFFCDD;
+  color: #D3882F;
 }

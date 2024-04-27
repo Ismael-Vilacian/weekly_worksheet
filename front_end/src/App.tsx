@@ -10,6 +10,7 @@ import RegisterDiscipline from './pages/registerDiscipline.tsx';
 import RegisterTime from './pages/registerTime.tsx';
 import RegisterTeacher from './pages/registerTeacher.tsx';
 import logo from './assets/svg_icons/logo.svg';
+import { closeAlert } from './utils/tools.tsx';
 
 
 function App() {
@@ -36,6 +37,12 @@ function App() {
           <img src={logo} />
         </div>
       </div>
+
+      <div onClick={closeAlert} className="alert">
+        <div className="alert_description"></div>
+        <div className="alert_close"><i className="bi bi-x"></i></div>
+      </div>
+
     </div>
   );
 }

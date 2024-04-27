@@ -45,6 +45,6 @@ def set_time(request):
     time = request.data
     
     database_controller = database()
-    database_controller.set_data('horario', f"'{time['descricao']}', {time['hora_inicio']}, {time['hora_fim']}", "(descricao, inicio, fim)")
+    database_controller.set_data('horario', f"'{time['descricao']}', '{time['hora_inicio']}', '{time['hora_fim']}'", "(descricao, inicio, fim)")
     
     return Response()
