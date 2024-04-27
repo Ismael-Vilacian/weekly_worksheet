@@ -7,3 +7,9 @@ export const generateRandomClassName = () => {
     }
     return className;
 };
+
+export const loading = (add) => {
+    const loading: any = document.querySelector('.loading');
+    const action = add ? 'block' : 'none';
+    loading.style.display = action;
+}

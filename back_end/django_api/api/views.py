@@ -39,3 +39,12 @@ def set_course(request):
         database_controller.set_data('cursoDisciplina', f"'{course_id}', {disciplina['id']}", "(cursoId, disciplinaId)")
 
     return Response()
+
+@api_view(["POST"])
+def set_time(request):
+    time = request.data
+    
+    database_controller = database()
+    database_controller.set_data('horario', f"'{time['descricao']}', {time['hora_inicio']}, {time['hora_fim']}", "(descricao, inicio, fim)")
+    
+    return Response()

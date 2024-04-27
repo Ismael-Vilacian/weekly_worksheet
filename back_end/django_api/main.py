@@ -32,10 +32,10 @@ CREATE TABLE IF NOT EXISTS gradeHorario (
 horario = '''
 CREATE TABLE IF NOT EXISTS horario (
   id INTEGER PRIMARY KEY AUTOINCREMENT,
+  descricao VARCHAR,
   inicio TIME,
   fim TIME,
-  gradeHorarioId INTEGER REFERENCES gradeHorario(id),
-  UNIQUE (inicio, fim, gradeHorarioId)
+  UNIQUE (inicio, fim)
 );
 '''
 

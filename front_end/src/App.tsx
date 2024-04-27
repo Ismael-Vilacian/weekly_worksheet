@@ -9,6 +9,7 @@ import RegisterCourse from './pages/registerCourse.tsx';
 import RegisterDiscipline from './pages/registerDiscipline.tsx';
 import RegisterTime from './pages/registerTime.tsx';
 import RegisterTeacher from './pages/registerTeacher.tsx';
+import logo from './assets/svg_icons/logo.svg';
 
 
 function App() {
@@ -29,6 +30,12 @@ function App() {
           </Routes>
         </RenderContainer>
       </Router>
+
+      <div className="loading">
+        <div className="loading_logo">
+          <img src={logo} />
+        </div>
+      </div>
     </div>
   );
 }

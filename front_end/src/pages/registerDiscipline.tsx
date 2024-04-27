@@ -1,10 +1,12 @@
 import React from "react";
 import Header from "../components/header.tsx";
 import { InputDefault } from "../components/input-default.tsx";
+import { loading } from "../utils/tools.tsx";
 
 const RegisterDiscipline: React.FC = () => {
 
     const saveDiscipline = () => {
+        loading(true);
         const inputNome: any = document.querySelector('input[name="course_name"]');
         const inputHour: any = document.querySelector('input[name="hour_name"]');
 
@@ -21,8 +23,8 @@ const RegisterDiscipline: React.FC = () => {
             },
             body: JSON.stringify(data) 
         })
-        .then(data => console.log(data))
-        .catch(console.log);
+        .then(data => loading(false))
+        .catch(() => loading(false));
     }
 
     return (
