@@ -1,14 +1,40 @@
-Table curso {
-  id integer [primary key]
-  nome varchar
-  carga_horaria integer
+Table cursoDisciplina {
+  id int [pk]
+  cursoId int [ref: > curso.id]
+  disciplinaId int [ref: > disciplina.id]
 }
 
 Table disciplina {
   id integer [primary key]
   nome varchar
   carga_horaria integer
-  curso_id integer [ref: > curso.id]
+}
+
+Table gradeHorario {
+  id int [pk]
+  descricao varchar
+}
+
+Table horario {
+  id int [pk]
+  inicio time
+  fim time
+  gradeHorarioId int [ref: > gradeHorario.id]
+}
+
+Table aula {
+  id int [pk]
+  disciplinaId int [ref: > cursoDisciplina.id]
+  professorId int [ref: > professor.id]
+  horarioId int [ref: > horario.id]
+  diaSemana int [ref: > diaDaSemana.id]
+}
+
+Table disponibilidade {
+  id int [pk]
+  professorId int [ref: > professor.id]
+  diaSemana int [ref: > diaDaSemana.id]
+  horarioId int [ref: > horario.id]
 }
 
 Table professor {
@@ -16,24 +42,13 @@ Table professor {
   nome varchar
 }
 
-Table disponibilidade {
+Table curso {
   id integer [primary key]
-  professor_id integer [ref: > professor.id]
-  dia_semana varchar
+  nome varchar
+  carga_horaria integer
 }
 
-Table horario {
-  id integer [primary key]
-  dia_semana varchar
-  hora_inicio time
-  hora_fim time
+Table diaDaSemana {
+  id integer [pk]
+  descricao varchar
 }
-
-Table aula {
-  id integer [primary key]
-  disciplina_id integer [ref: > disciplina.id]
-  horario_id integer [ref: > horario.id]
-  professor_id integer [ref: > professor.id]
-}
-
-dbdiagram.io

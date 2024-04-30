@@ -20,11 +20,14 @@ const RegisterCourse: React.FC = () => {
     }, []);
 
     const saveCourse = () => {
-        loading(true);
-
+        
         const inputName: any = document.querySelector('input[name="course_name"]');
         const inputHour: any = document.querySelector('input[name="hour_name"]');
-
+        
+        if (!validadeForm(inputName, inputHour)) return;
+        
+        loading(true);
+        
         const data = {
             descricao: inputName.value,
             carga_horaria: inputHour.value,
@@ -46,6 +49,27 @@ const RegisterCourse: React.FC = () => {
             loading(false);
             openAlert('Erro ao cadastrar curso', 'failure');
         });
+    }
+
+    function validadeForm(inputName, inputHour) {
+        if (!inputName.value || inputName.value === '') {
+            openAlert('Descrição é obrigatória', 'failure');
+            inputName.focus();
+            return false;
+        }
+
+        if (!inputHour.value || inputHour.value === '') {
+            openAlert('Carga horaria é obrigatória', 'failure');
+            inputHour.focus();
+            return false;
+        }
+
+        if (!selectedDisciplines || selectedDisciplines.length === 0) {
+            openAlert('Selecione ao menos uma disciplina', 'failure');
+            return false;
+        }
+
+        return true;
     }
 
     const cleanForms = (inputName, inputHour) => {
