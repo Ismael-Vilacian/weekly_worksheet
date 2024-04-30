@@ -79,6 +79,26 @@ CREATE TABLE IF NOT EXISTS disponibilidade (
   UNIQUE (professorId, diaSemana, horarioId)
 );
 '''
+
+#Tabela dia da semana
+diaDaSemana = '''
+CREATE TABLE IF NOT EXISTS diaDaSemana (
+  id INTEGER PRIMARY KEY AUTOINCREMENT,
+  nome VARCHAR
+);
+'''
+
+#Populando tabela dia da semana
+diaDaSemana_populate = [
+'''INSERT INTO diaDaSemana (nome) VALUES ('Segunda-feira');''',
+'''INSERT INTO diaDaSemana (nome) VALUES ('Terça-feira');''',
+'''INSERT INTO diaDaSemana (nome) VALUES ('Quarta-feira');''',
+'''INSERT INTO diaDaSemana (nome) VALUES ('Quinta-feira');''',
+'''INSERT INTO diaDaSemana (nome) VALUES ('Sexta-feira');''',
+'''INSERT INTO diaDaSemana (nome) VALUES ('Sábado');''',
+'''INSERT INTO diaDaSemana (nome) VALUES ('Domingo');'''
+]
+
 database_controller = database()
 
 database_controller.custom_script(cursos)
@@ -89,3 +109,7 @@ database_controller.custom_script(curso_disciplina)
 database_controller.custom_script(professor)
 database_controller.custom_script(aula)
 database_controller.custom_script(disponibilidade)
+database_controller.custom_script(diaDaSemana)
+
+for data in range(0, len(diaDaSemana_populate)):
+  database_controller.custom_script(diaDaSemana_populate[data])
