@@ -8,3 +8,5 @@ urlpatterns = [
     path("set-course/", views.set_course),
     path("set-time/", views.set_time),
 ]
+
+#Achievements
