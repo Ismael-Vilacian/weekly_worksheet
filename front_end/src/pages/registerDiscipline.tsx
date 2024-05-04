@@ -1,9 +1,15 @@
-import React from "react";
+import React, { useEffect, useMemo } from "react";
 import Header from "../components/header.tsx";
 import { InputDefault } from "../components/input-default.tsx";
 import { loading, openAlert } from "../utils/tools.tsx";
+import { Events } from "../utils/events.ts";
 
 const RegisterDiscipline: React.FC = () => {
+    const events = useMemo(() => new Events(), []);
+    
+    useEffect(() => {
+        events.publish('menuBar:setMenuBar', 'register');
+    }, [events]);
 
     const saveDiscipline = () => {
         const inputNome: any = document.querySelector('input[name="course_name"]');
