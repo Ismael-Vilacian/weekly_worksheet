@@ -1,11 +1,14 @@
-import React, { useState } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import logo from "../assets/images/logo.png";
 import { Link } from "react-router-dom";
 import FloatingMenu from "./floatingMenu.tsx";
+import { Events } from "../utils/events.ts";
 
 const MenuBar: React.FC = () => {
+    const events = useMemo(() => new Events(), []);
     const [renderMenuRegister, setRenderMenuRegister] = useState(false);
     const [renderMenuReports, setrenderMenuReports] = useState(false);
+    const [actionSelect, setActionSelect] = useState('home');
 
     const renderMenuController = (render: any, setRender: any) => {
         setRenderMenuRegister(false);
@@ -15,14 +18,21 @@ const MenuBar: React.FC = () => {
         }
     }
 
+    useEffect(() => {
+        events.subscribe('menuBar:setMenuBar', (action: string) => {
+            debugger
+            setActionSelect(action[0]);
+        });
+    }, [events]);
+
     return (
         <div className="menu-bar">
             <div className="menu-bar_logo">
                 <img width={152} src={logo} alt="logo" />
             </div>
             <div className="menu-bar_actions">
-                <Link onClick={() => renderMenuController(null, null)} to="home" className="menu-bar_action menu-bar_action-select">Inicio</Link>
-                <div onClick={() => renderMenuController(renderMenuRegister, setRenderMenuRegister)} className="menu-bar_action">
+                <Link onClick={() => renderMenuController(null, null)} to="home" className={`menu-bar_action ${actionSelect === 'home' ? 'menu-bar_action-select' : '' }`}>Inicio</Link>
+                <div className={`menu-bar_action ${actionSelect === 'register' ? 'menu-bar_action-select' : '' }`} onClick={() => renderMenuController(renderMenuRegister, setRenderMenuRegister)}>
                     Cadastros
                     <FloatingMenu data={
                         [

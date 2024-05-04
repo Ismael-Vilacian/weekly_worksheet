@@ -1,7 +1,6 @@
 import React from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import { RenderContainer } from './components/renderContainer.tsx';
-import { Home } from './pages/home.tsx';
 import { Register } from './pages/register.tsx';
 import { Reports } from './pages/reports.tsx';
 import MenuBar from './components/menuBar.tsx';
@@ -11,6 +10,7 @@ import RegisterTime from './pages/registerTime.tsx';
 import RegisterTeacher from './pages/registerTeacher.tsx';
 import logo from './assets/svg_icons/logo.svg';
 import { closeAlert } from './utils/tools.tsx';
+import Home from './pages/home.tsx';
 
 
 function App() {
@@ -34,7 +34,7 @@ function App() {
 
       <div className="loading">
         <div className="loading_logo">
-          <img src={logo} />
+          <img src={logo} alt="" />
         </div>
       </div>
 

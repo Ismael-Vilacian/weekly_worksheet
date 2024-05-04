@@ -1,10 +1,12 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useMemo } from "react";
 import Header from "../components/header.tsx";
 import InputMultiSelect from "../components/input-multi-select.tsx";
 import { InputDefault } from "../components/input-default.tsx";
 import { loading, openAlert } from "../utils/tools.tsx";
+import { Events } from "../utils/events.ts";
 
 const RegisterCourse: React.FC = () => {
+    const events = useMemo(() => new Events(), []);
     const [disciplinesData, setDisciplinesData] = React.useState([]);
     const [selectedDisciplines, setSelectedDisciplines] = React.useState([]);
     const [rebuildComponent, setRebuildComponent] = React.useState(false);
@@ -18,6 +20,10 @@ const RegisterCourse: React.FC = () => {
             })
             .catch(console.log);
     }, []);
+
+    useEffect(() => {
+        events.publish('menuBar:setMenuBar', 'register');
+    }, [events]);
 
     const saveCourse = () => {
         
