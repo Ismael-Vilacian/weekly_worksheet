@@ -20,7 +20,6 @@ const MenuBar: React.FC = () => {
 
     useEffect(() => {
         events.subscribe('menuBar:setMenuBar', (action: string) => {
-            debugger
             setActionSelect(action[0]);
         });
     }, [events]);

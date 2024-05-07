@@ -532,3 +532,44 @@ body {
   background: #FFFCDD;
   color: #D3882F;
 }
+
+.collection-editor {
+  max-width: 745px;
+  width: 100%;
+  border-radius: 8px;
+  border: 1px solid #BDD4E6;
+  background: #FFF;
+  min-height: 100px;
+}
+
+.collection-editor .collection-editor_header {
+  max-width: calc(747px - 38px);
+  width: 100%;
+  min-height: 51px;
+  display: flex;
+  justify-content: space-between;
+  border-radius: 7px 7px 0px 0px;
+  background: #9D1113;
+  align-items: center;
+  padding-left: 18px;
+  padding-right: 18px;
+  color: #FFF;
+  font-size: 18px;
+  font-weight: 600;
+}
+
+.collection-editor .collection-editor_header i {
+  &:not(:last-child) {
+    margin-right: 10px;
+  }
+  
+  &:last-child {
+    font-size: 21px;
+  }
+
+  cursor: pointer;
+}
+
+.collection-editor .collection-editor_header i:hover {
+  opacity: 0.8;
+}

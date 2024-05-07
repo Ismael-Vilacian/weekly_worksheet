@@ -81,7 +81,7 @@ const InputMultiSelect: React.FC<InputMultiSelectProps> = ({ dados, placeholder 
         setTimeout(() => {
             const description = event.target.value.toLowerCase();
             if (description && description !== '') {
-                const dados = completeObject.filter((m: any) => m.descricao.toLowerCase().includes(description));
+                const dados = completeObject.filter((m: any) => m.descricao ? m.descricao.toLowerCase().includes(description) : m.nome.toLowerCase().includes(description));
                 setDadosState(dados);
             } else {
                 setDadosState(completeObject);
@@ -130,7 +130,7 @@ const InputMultiSelect: React.FC<InputMultiSelectProps> = ({ dados, placeholder 
             <div className="options-selected">
                 {itens?.map((itemSelected) => (
                     <div className="option" key={itemSelected[propriedade]}>
-                        {itemSelected.descricao} <span onClick={() => handleItemClick(itemSelected)} className="icon-close-item"><i className="fas fa-times"></i></span>
+                        {itemSelected.descricao ?? itemSelected.nome} <span onClick={() => handleItemClick(itemSelected)} className="icon-close-item"><i className="fas fa-times"></i></span>
                     </div>
                 ))}
             </div>
@@ -154,7 +154,7 @@ const InputMultiSelect: React.FC<InputMultiSelectProps> = ({ dados, placeholder 
                     {dadosState && dadosState.length > 0 && dadosState.map((item: any) => (
                         <li key={item[propriedade]} onClick={() => handleItemClick(item)}>
                             <input type="checkbox" checked={item.selecionado}></input>
-                            {item?.descricao}
+                            {item?.descricao ?? item?.nome}
                         </li>
                     ))}
                 </ul>

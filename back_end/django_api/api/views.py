@@ -1,5 +1,7 @@
 from rest_framework.response import Response
 from rest_framework.decorators import api_view
+from entities.diaDaSemana import DiaDaSemana
+from entities.horario import Horario
 from entities.disciplina import Disciplina
 from entities.curso import Curso
 from database_controller import database
@@ -19,6 +21,22 @@ def get_disciplines(request):
         disciplines.append(Disciplina(discipline[0], discipline[1], discipline[2]).to_dict())
     
     return Response(json.dumps(disciplines))
+
+@api_view(["GET"])
+def get_data_availability(request):
+    database_controller = database()
+    responseDayOfWeek = database_controller.get_data('diaDaSemana')
+    responseTime = database_controller.get_data('horario')
+
+    daysOfWeeks = []
+    times = []
+    for dayOfWeek in responseDayOfWeek:
+        daysOfWeeks.append(DiaDaSemana(dayOfWeek[0], dayOfWeek[1]).to_dict())
+    
+    for time in responseTime:
+        times.append(Horario(time[0], time[1], time[2], time[3]).to_dict())
+
+    return Response(json.dumps({"daysOfWeeks": daysOfWeeks, "times": times}))
 
 @api_view(["POST"])
 def set_disciplines(request):

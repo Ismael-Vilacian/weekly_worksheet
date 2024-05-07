@@ -4,9 +4,10 @@ interface props {
     contentPresentation: JSX.Element;
     editingContent: JSX.Element;
     description: string;
+    change?: any;
 }
 
-const CollectionEditor: React.FC<props> = ({ contentPresentation, editingContent, description }) => {
+const CollectionEditor: React.FC<props> = ({ contentPresentation, editingContent, description, change }) => {
     const [editing, setEditing] = React.useState(false)
     return (
         <div className="collection-editor">
@@ -20,7 +21,10 @@ const CollectionEditor: React.FC<props> = ({ contentPresentation, editingContent
                         <i onClick={() => setEditing(true)} className="bi bi-plus-lg"></i> :
                         <span>
                             <i onClick={() => setEditing(false)} className="bi bi-x-lg"></i>
-                            <i className="bi bi-check2"></i>
+                            <i onClick={() => {
+                                change();
+                                setEditing(false)
+                            }} className="bi bi-check2"></i>
                         </span>
                     }
                 </div>

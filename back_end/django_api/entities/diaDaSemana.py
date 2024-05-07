@@ -1,12 +1,10 @@
 from .abstract_entity import AbstractEntity
 
-class Horario(AbstractEntity):
-    def __init__(self, id, nome, inicio, fim):
+class DiaDaSemana(AbstractEntity):
+    def __init__(self, id, nome):
         super().__init__() 
         self.id = id
-        self.nome = nome,
-        self.inicio = inicio,
-        self.fim = fim
+        self.nome = nome
     
     def table_name(self):
         return 'diaDaSemana'
@@ -15,6 +13,4 @@ class Horario(AbstractEntity):
         return {
             'id': self.id,
             'nome': self.nome,
-            'inicio': self.inicio,
-            'fim': self.fim
         }
