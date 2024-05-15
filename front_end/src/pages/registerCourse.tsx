@@ -4,15 +4,16 @@ import InputMultiSelect from "../components/input-multi-select.tsx";
 import { InputDefault } from "../components/input-default.tsx";
 import { loading, openAlert } from "../utils/tools.tsx";
 import { Events } from "../utils/events.ts";
+declare var URL_API: any;
 
 const RegisterCourse: React.FC = () => {
     const events = useMemo(() => new Events(), []);
     const [disciplinesData, setDisciplinesData] = React.useState([]);
     const [selectedDisciplines, setSelectedDisciplines] = React.useState([]);
     const [rebuildComponent, setRebuildComponent] = React.useState(false);
-
+    
     useEffect(() => {
-        fetch('https://shiny-sniffle-rwx644pwx4vcprqg-8000.app.github.dev/get-disciplines/')
+        fetch(`${URL_API}/get-disciplines/`)
             .then(response => response.json())
             .then(data => {
                 setDisciplinesData(JSON.parse(data));
@@ -40,7 +41,7 @@ const RegisterCourse: React.FC = () => {
             disciplinas: selectedDisciplines
         }
 
-        let url = 'https://shiny-sniffle-rwx644pwx4vcprqg-8000.app.github.dev/set-course/';
+        let url = `${URL_API}/set-course/`;
         fetch(url, {
             method: 'POST',
             headers: {

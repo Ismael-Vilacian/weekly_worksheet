@@ -5,14 +5,33 @@ const InputMultiSelect: React.FC<InputMultiSelectProps> = ({ dados, placeholder 
     const [itens, setItens] = useState<any[]>([]);
     const [dadosState, setDadosState] = useState<any[]>([]);
     const [completeObject, setCompleteObject] = useState<any[]>([]);
+    const [classInput, setClassInput] = useState<string>();
 
     const toggleDropdown = () => {
         setIsOpen((prevIsOpen) => !prevIsOpen);
         eventClickCloseDropdown();
         setDadosState(completeObject);
-        const input: any = document.getElementById('input-options');
+        const input: any = document.querySelector(`.${classInput}`);
         input.focus();
     };
+
+    useEffect(() => {
+        setClassInput(randomClass());
+    }, [])
+
+    const randomClass = () => {
+        const letras = 'abcdefghijklmnopqrstuvwxyz';
+        const numeros = '0123456789';
+        const caracteres = letras + letras.toUpperCase() + numeros;
+        let classe = 'input_';
+
+        for (let i = 0; i < 8; i++) {
+            const indice = Math.floor(Math.random() * caracteres.length);
+            classe += caracteres.charAt(indice);
+        }
+
+        return classe;
+    }
 
     const eventClickCloseDropdown = () => {
         const app: any = document.querySelector('.App');
@@ -73,7 +92,7 @@ const InputMultiSelect: React.FC<InputMultiSelectProps> = ({ dados, placeholder 
     };
 
     const clearInput = () => {
-        const input: any = document.getElementById('input-options');
+        const input: any = document.querySelector(`.${classInput}`);
         if (input) input.value = '';
     }
 
@@ -115,7 +134,7 @@ const InputMultiSelect: React.FC<InputMultiSelectProps> = ({ dados, placeholder 
             <div
                 className={`dropdown-header ${disabled ? 'dropdown-header-disabled' : ''}`}
                 onClick={!disabled ? () => { if (!isOpen) toggleDropdown(); } : () => { }}>
-                <input onKeyDown={searchForDescription} id="input-options" type="text" />
+                <input onKeyDown={searchForDescription} className={classInput} id="input-options" type="text" />
 
                 <div className="arrow-icon">
                     <span className={!isOpen ? 'arrow-icon-active' : 'arrow-icon-inactive'}>

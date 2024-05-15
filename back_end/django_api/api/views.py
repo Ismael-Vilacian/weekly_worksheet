@@ -29,10 +29,10 @@ def get_data_availability(request):
     responseTime = database_controller.get_data('horario')
 
     daysOfWeeks = []
-    times = []
     for dayOfWeek in responseDayOfWeek:
         daysOfWeeks.append(DiaDaSemana(dayOfWeek[0], dayOfWeek[1]).to_dict())
-    
+
+    times = []
     for time in responseTime:
         times.append(Horario(time[0], time[1], time[2], time[3]).to_dict())
 
@@ -65,4 +65,12 @@ def set_time(request):
     database_controller = database()
     database_controller.set_data('horario', f"'{time['descricao']}', '{time['hora_inicio']}', '{time['hora_fim']}'", "(descricao, inicio, fim)")
     
+    return Response()
+
+@api_view(["POST"])
+def set_teacher(request):
+    teacher = request.data
+    
+    database_controller = database()
+    database_controller.set_data('professor', f"'{teacher['nome']}', '{teacher['email']}', '{teacher['telefone']}'", "(nome, email, telefone)")
     return Response()

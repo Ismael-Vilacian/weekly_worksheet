@@ -3,6 +3,7 @@ import Header from "../components/header.tsx";
 import { InputDefault } from "../components/input-default.tsx";
 import { loading, openAlert } from "../utils/tools.tsx";
 import { Events } from "../utils/events.ts";
+declare var URL_API: any;
 
 const RegisterTime: React.FC = () => {
     const events = useMemo(() => new Events(), []);
@@ -26,7 +27,7 @@ const RegisterTime: React.FC = () => {
             hora_fim: inputEndTime.value
         }
 
-        let url = 'https://shiny-sniffle-rwx644pwx4vcprqg-8000.app.github.dev/set-time/';
+        let url = `${URL_API}/set-time/`;
         fetch(url, {
             method: 'POST',
             headers: {

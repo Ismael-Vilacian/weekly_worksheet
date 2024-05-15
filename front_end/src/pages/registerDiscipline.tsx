@@ -3,6 +3,7 @@ import Header from "../components/header.tsx";
 import { InputDefault } from "../components/input-default.tsx";
 import { loading, openAlert } from "../utils/tools.tsx";
 import { Events } from "../utils/events.ts";
+declare var URL_API: any;
 
 const RegisterDiscipline: React.FC = () => {
     const events = useMemo(() => new Events(), []);
@@ -24,7 +25,7 @@ const RegisterDiscipline: React.FC = () => {
             carga_horaria: inputHour.value
         }
 
-        let url = 'https://shiny-sniffle-rwx644pwx4vcprqg-8000.app.github.dev/set-disciplines/';
+        let url = `${URL_API}/set-disciplines/`;
         fetch(url, {
             method: 'POST',
             headers: {

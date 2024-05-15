@@ -534,16 +534,15 @@ body {
 }
 
 .collection-editor {
-  max-width: 745px;
   width: 100%;
   border-radius: 8px;
   border: 1px solid #BDD4E6;
   background: #FFF;
-  min-height: 100px;
+  min-height: 270px;
 }
 
 .collection-editor .collection-editor_header {
-  max-width: calc(747px - 38px);
+  max-width: calc(100% - 36px);
   width: 100%;
   min-height: 51px;
   display: flex;
@@ -562,7 +561,7 @@ body {
   &:not(:last-child) {
     margin-right: 10px;
   }
-  
+
   &:last-child {
     font-size: 21px;
   }
@@ -572,4 +571,61 @@ body {
 
 .collection-editor .collection-editor_header i:hover {
   opacity: 0.8;
+}
+
+.collection-editor_content .no-data {
+  margin-top: 25px !important;
+  margin-bottom: 25px !important;
+}
+
+.collection-editor_content .no-data img {
+  max-width: 100px;
+}
+
+.availability .availability_data {
+  display: grid;
+  grid-template-columns: 20% 80%;
+  padding: 8px 18px 8px 18px;
+  color: #4A687B;
+  font-family: Inter;
+  font-size: 14px;
+  font-style: normal;
+  font-weight: 500;
+  position: relative;
+}
+
+.availability .availability_data:not(:last-child) {
+  border-bottom: 1px solid #bdd4e6;
+}
+
+.availability .availability_data .availability_times {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+}
+
+.availability .availability_data .availability_times .chip:not(:last-child) {
+  margin-right: 8px;
+}
+
+.availability .availability_data:hover .availability_close {
+  display: flex !important;
+}
+
+.availability .availability_data .availability_close {
+  position: absolute;
+  right: 0;
+  height: 100%;
+  width: 30px;
+  text-align: center;
+  background: linear-gradient(-90deg, #9d11135e, transparent);
+  font-size: 19px;
+  display: none;
+  flex-direction: column;
+  cursor: pointer;
+}
+
+.availability .availability_data .availability_close i {
+  margin-top: 9px;
+  color: #9d1113;
 }

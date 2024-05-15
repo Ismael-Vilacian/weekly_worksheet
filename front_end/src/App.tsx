@@ -11,7 +11,7 @@ import RegisterTeacher from './pages/registerTeacher.tsx';
 import logo from './assets/svg_icons/logo.svg';
 import { closeAlert } from './utils/tools.tsx';
 import Home from './pages/home.tsx';
-
+import "./declarations.d.ts"
 
 function App() {
   return (
