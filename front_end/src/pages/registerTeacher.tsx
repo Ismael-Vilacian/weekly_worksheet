@@ -47,14 +47,23 @@ const RegisterTeacher: React.FC = () => {
     }
 
     const saveTeacher = () => {
-        
+
         const inputName: any = document.querySelector('input[name="teacher_name"]');
 
+        if (!validadeForm(inputName)) return;
+
         loading(true);
-        
+
+        const availabilityModel: any = [];
+        for (let availabilityData of availability) {
+            for (let time of availabilityData.times) {
+                availabilityModel.push({ diaSemana: availabilityData.dayOfWeek, horario: time });
+            }
+        }
+
         const data = {
-            descricao: inputName.value,
-            disponibilidade: availability
+            nome: inputName.value,
+            disponibilidade: availabilityModel
         }
 
         let url = `${URL_API}/set-teacher/`;
@@ -67,20 +76,41 @@ const RegisterTeacher: React.FC = () => {
         }).then(() => {
             loading(false);
             openAlert('Professor cadastrado com sucesso', 'success');
+            cleanForms(inputName);
         }).catch(() => {
             loading(false);
             openAlert('Erro ao cadastrar curso', 'failure');
         });
     }
 
+    function validadeForm(inputName) {
+        if (!inputName.value || inputName.value === '') {
+            openAlert('O Nome é obrigatório', 'failure');
+            inputName.focus();
+            return false;
+        }
+
+        if (!availability || availability.length === 0) {
+            openAlert('Adicione ao menos uma disponibilidade', 'failure');
+            return false;
+        }
+
+        return true;
+    }
+
+    function cleanForms(inputName) {
+        inputName.value = '';
+        setAvailability([]);
+    }
+
     const contentPresentation =
         <div className="availability"> {availability && availability.length ? availability.map((item: any) => {
             return <div className="availability_data">
-                        <div>{item.dayOfWeek.nome}</div>
-                        <div className="availability_times">{item.times.map((time: any) => <Chip>{time.nome}</Chip>)}</div>
+                <div>{item.dayOfWeek.nome}</div>
+                <div className="availability_times">{item.times.map((time: any) => <Chip>{time.nome}</Chip>)}</div>
 
-                        <div onClick={() => removeAvailability(item)} className="availability_close"><i className="bi bi-x"></i></div>
-                    </div>
+                <div onClick={() => removeAvailability(item)} className="availability_close"><i className="bi bi-x"></i></div>
+            </div>
         }) : <NoData description="Adicione as disponibilidades para poder visualizá-las" img={NoCourse} title="Nenhum disponibilidade cadastrada" />}
         </div>
 
@@ -95,7 +125,7 @@ const RegisterTeacher: React.FC = () => {
             <Header description="Cadastro de professor" />
 
             <div className="container_description">
-                <InputDefault placeholder="Descrição" name="teacher_name" type="text" />
+                <InputDefault placeholder="Nome" name="teacher_name" type="text" />
             </div>
 
             <div>

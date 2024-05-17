@@ -72,5 +72,9 @@ def set_teacher(request):
     teacher = request.data
     
     database_controller = database()
-    database_controller.set_data('professor', f"'{teacher['nome']}', '{teacher['email']}', '{teacher['telefone']}'", "(nome, email, telefone)")
+    teacher_id = database_controller.set_data('professor', f"'{teacher['nome']}'", "(nome)")
+    
+    for disponibilidade in teacher['disponibilidade']:
+        database_controller.set_data('disponibilidade', f"'{teacher_id}', {disponibilidade['diaSemana']['id']}, {disponibilidade['horario']['id']}", "(professorId, diaSemanaId, horarioId)")
+    
     return Response()

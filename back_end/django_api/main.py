@@ -74,9 +74,9 @@ disponibilidade = '''
 CREATE TABLE IF NOT EXISTS disponibilidade (
   id INTEGER PRIMARY KEY AUTOINCREMENT,
   professorId INTEGER REFERENCES professor(id),
-  diaSemana INTEGER REFERENCES diaDaSemana(id),
+  diaSemanaId INTEGER REFERENCES diaDaSemana(id),
   horarioId INTEGER REFERENCES horario(id),
-  UNIQUE (professorId, diaSemana, horarioId)
+  UNIQUE (professorId, diaSemanaId, horarioId)
 );
 '''
 
