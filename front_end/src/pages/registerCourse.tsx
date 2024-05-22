@@ -17,7 +17,6 @@ const RegisterCourse: React.FC = () => {
             .then(response => response.json())
             .then(data => {
                 setDisciplinesData(JSON.parse(data));
-                console.log(JSON.parse(data));
             })
             .catch(console.log);
     }, []);

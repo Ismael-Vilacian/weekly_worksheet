@@ -40,10 +40,10 @@ class database:
         self.conexao.commit()
         c.close()
 
-    def get_data(self, table_name):
+    def get_data(self, table_name, filter = ""):
         c = self.conexao.cursor()
-
-        c.execute(f'''SELECT * FROM {table_name};''')
+        
+        c.execute(f'''SELECT * FROM {table_name} {f'where {filter}' if filter != "" else ""};''')
         data = c.fetchall()
 
         c.close()

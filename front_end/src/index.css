@@ -10,15 +10,18 @@ body {
   padding: 0;
   font-family: "Inter", sans-serif;
 }
-
-#root .App {
+.render-container {
   max-width: 1280px;
   margin: 0 auto;
+}
+
+#root .App {
   height: 100vh;
   position: relative;
 }
 
 #root .menu-bar {
+  max-width: 1280px;
   width: Calc(100% - 55px);
   background: #fff;
   height: 80px;
@@ -210,6 +213,19 @@ body {
   height: 41px;
   border-bottom: 1px solid #CFCFCF;
   margin-bottom: 34px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.header .header_action {
+  color: #c40f11;
+  cursor: pointer;
+  user-select: none;
+}
+
+.header .header_action:hover {
+  opacity: 0.7;
 }
 
 .header .header_description {
@@ -382,7 +398,7 @@ body {
 }
 
 .dropdown-options li.option-selected {
-  background-color: #005eb8;
+  background-color: #c40f11;
   color: #fff;
 }
 
@@ -628,4 +644,48 @@ body {
 .availability .availability_data .availability_close i {
   margin-top: 9px;
   color: #9d1113;
+}
+
+.back-drop-modal {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  background: #00000096;
+  top: 0;
+  left: 0;
+  backdrop-filter: blur(3px);
+}
+
+.back-drop-modal .modal {
+  width: 35%;
+  height: 70%;
+  background: #fff;
+  position: absolute;
+  left: calc(50% - (35% / 2));
+  top: calc(50% - (70% / 2));
+  border-radius: 16px;
+}
+
+.back-drop-modal .modal .modal_header {
+  display: flex;
+  justify-content: space-between;
+  padding: 20px;
+  border-bottom: 1px solid #CFCFCF;
+  color: #4b5861;
+  font-size: 16px;
+}
+
+.back-drop-modal .modal .modal_header .modal-action {
+  cursor: pointer;
+}
+
+.back-drop-modal .modal .modal_header .modal-action:hover {
+  opacity: 0.7;
+}
+
+.back-drop-modal .modal .modal_data {
+  width: calc(100% - 40px);
+  height: calc(100% - 101px);    
+  padding: 20px;
+  overflow: auto;
 }

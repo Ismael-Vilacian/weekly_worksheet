@@ -39,7 +39,7 @@ const MenuBar: React.FC = () => {
                             { description: 'Professor', link: 'register-teacher' }
                         ]} render={renderMenuRegister} setData={setRenderMenuRegister} />
                 </div>
-                <Link onClick={() => renderMenuController(null, null)} to="home" className={`menu-bar_action ${actionSelect === 'reports' ? 'menu-bar_action-select' : '' }`}>Planejamentos</Link>
+                <Link onClick={() => renderMenuController(null, null)} to="work-board-list" className={`menu-bar_action ${actionSelect === 'reports' ? 'menu-bar_action-select' : '' }`}>Planejamentos</Link>
             </div>
             <div></div>
         </div>

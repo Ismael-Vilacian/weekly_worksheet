@@ -23,6 +23,22 @@ def get_disciplines(request):
     return Response(json.dumps(disciplines))
 
 @api_view(["GET"])
+def get_disciplines_by_courseid(request, id):
+    database_controller = database()
+    response = database_controller.get_data('cursoDisciplina', f"cursoId = {id}")
+    
+    disciplines_ids = []
+    for resp in response:
+        disciplines_ids.append(resp[2])
+
+    disciplines_bd = database_controller.get_data('disciplina', f"id in ({', '.join(map(str, disciplines_ids))})")
+    disciplines = []
+    for discipline in disciplines_bd:
+        disciplines.append(Disciplina(discipline[0], discipline[1], discipline[2]).to_dict())
+
+    return Response(json.dumps(disciplines))
+
+@api_view(["GET"])
 def get_data_availability(request):
     database_controller = database()
     responseDayOfWeek = database_controller.get_data('diaDaSemana')
@@ -46,6 +62,18 @@ def set_disciplines(request):
     database_controller.set_data('disciplina', f"'{disciplina['descricao']}', {disciplina['carga_horaria']}", "(nome, carga_horaria)")
     
     return Response()
+
+
+@api_view(["GET"])
+def get_course(request):
+    database_controller = database()
+    response = database_controller.get_data('curso')
+    
+    couses = []
+    for course in response:
+        couses.append(Curso(course[0], course[1], course[2]).to_dict())
+    
+    return Response(json.dumps(couses))
 
 @api_view(["POST"])
 def set_course(request):

@@ -10,6 +10,7 @@ import logo from './assets/svg_icons/logo.svg';
 import { closeAlert } from './utils/tools.tsx';
 import Home from './pages/home.tsx';
 import "./declarations.d.ts"
+import WorkBoardList from './pages/workBoardList.tsx';
 
 function App() {
   return (
@@ -24,6 +25,7 @@ function App() {
             <Route path="/register-discipline" element={<RegisterDiscipline />} />
             <Route path="/register-time" element={<RegisterTime />} />
             <Route path="/register-teacher" element={<RegisterTeacher />} />
+            <Route path="/work-board-list" element={<WorkBoardList />} />
           </Routes>
         </RenderContainer>
       </Router>
