@@ -106,3 +106,65 @@ def set_teacher(request):
         database_controller.set_data('disponibilidade', f"'{teacher_id}', {disponibilidade['diaSemana']['id']}, {disponibilidade['horario']['id']}", "(professorId, diaSemanaId, horarioId)")
     
     return Response()
+
+# @api_view(["POST"])
+# def creat_work_board(request):
+#     database_controller = database()
+#     data = {}
+#     data['turma'] = request.data['turma']
+#     curso = request.data['curso']
+#     print(curso)
+#     data['curso'] = Curso(curso['id'], curso['descricao'], curso['carga_horaria'])
+
+#     data['disciplinas'] = []
+#     for disciplina in request.data['disciplinas']:
+#         data['disciplinas'].append(Disciplina(disciplina['id'], disciplina['descricao'], disciplina['carga_horaria']).to_dict())
+     
+        
+
+#     return Response()
+
+@api_view(["POST"])
+def creat_work_board(request):
+    database_controller = database()
+    data = {}
+    data['turma'] = request.data['turma']
+    curso = request.data['curso']
+    print(curso)
+    data['curso'] = Curso(curso['id'], curso['descricao'], curso['carga_horaria'])
+
+    data['disciplinas'] = []
+    for disciplina in request.data['disciplinas']:
+        data['disciplinas'].append(Disciplina(disciplina['id'], disciplina['descricao'], disciplina['carga_horaria']).to_dict())
+
+    # Obtenha todos os professores
+    professores = database_controller.get_data('professor')
+
+    # Para cada disciplina
+    for disciplina in data['disciplinas']:
+        # Obtenha todos os professores que podem ensinar a disciplina
+        professores_disciplina = professores.filter(cursoDisciplina__disciplinaId=disciplina['id'])
+
+        # Para cada professor
+        for professor in professores_disciplina:
+            # Verifique se o professor está disponível no horário da aula
+            disponibilidade = Disponibilidade.objects.filter(professorId=professor.id, horarioId=aula.horarioId)
+
+            # Se o professor estiver disponível
+            if disponibilidade:
+                # Atribua a disciplina ao professor
+                Aula.objects.create(disciplinaId=disciplina['id'], professorId=professor.id, horarioId=aula.horarioId, diaSemana=aula.diaSemana, turmaId=data['turma']['id'])
+
+                # Remova o horário da lista de disponibilidade do professor
+                disponibilidade.delete()
+
+                # Saia do loop
+                break
+        else:
+            # Se não houver professores disponíveis para uma disciplina, retorne um erro
+            return Response({"error": "Não há professores disponíveis para a disciplina {}".format(disciplina['descricao'])}, status=400)
+
+    # Se todas as disciplinas forem atribuídas com sucesso, crie a turma
+    Turma.objects.create(descricao=data['turma']['descricao'])
+
+    return Response()

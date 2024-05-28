@@ -10,5 +10,6 @@ urlpatterns = [
     path("get-course/", views.get_course),
     path("set-time/", views.set_time),
     path("get-data-availability/", views.get_data_availability),
-    path("set-teacher/", views.set_teacher)
+    path("set-teacher/", views.set_teacher),
+    path("creat-work-board/", views.creat_work_board)
 ]
