@@ -21,7 +21,7 @@ const RegisterDiscipline: React.FC = () => {
         loading(true);
 
         const data = {
-            descricao: inputNome.value,
+            nome: inputNome.value,
             carga_horaria: inputHour.value
         }
 

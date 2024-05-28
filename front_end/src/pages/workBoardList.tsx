@@ -20,7 +20,7 @@ const WorkBoardList: React.FC = () => {
         fetch(`${URL_API}/get-course/`)
             .then(response => response.json())
             .then(data => {
-                setCourses(JSON.parse(data));
+                setCourses(data);
             })
             .catch(console.log);
     }, []);
@@ -36,7 +36,7 @@ const WorkBoardList: React.FC = () => {
         fetch(`${URL_API}/get-disciplines-by-courseid/${data.id}`)
             .then(response => response.json())
             .then(data => {
-                setDisciplines(JSON.parse(data));
+                setDisciplines(data);
             })
             .catch(console.log);
     }

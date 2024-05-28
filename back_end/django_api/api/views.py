@@ -1,168 +1,106 @@
-from rest_framework.response import Response
-from rest_framework.decorators import api_view
-from entities.diaDaSemana import DiaDaSemana
-from entities.horario import Horario
+from entities.turma import Turma
+from entities.aula import Aula
 from entities.disciplina import Disciplina
-from entities.curso import Curso
-from database_controller import database
-import json
-
-@api_view(["GET"])
-def hello_world(request):
-    return Response({"message": "Hello, world!"})
+from entities.curso import Curso 
+from entities.curso_disciplina import CursoDisciplina
+from entities.dia_da_semana import DiaDaSemana 
+from entities.horario import Horario
+from entities.professor import Professor
+from entities.disponibilidade import Disponibilidade
+from rest_framework.decorators import api_view
+from rest_framework.response import Response
+from django.forms.models import model_to_dict
 
 @api_view(["GET"])
 def get_disciplines(request):
-    database_controller = database()
-    response = database_controller.get_data('disciplina')
-    
-    disciplines = []
-    for discipline in response:
-        disciplines.append(Disciplina(discipline[0], discipline[1], discipline[2]).to_dict())
-    
-    return Response(json.dumps(disciplines))
+    disciplines = Disciplina.objects.all()
+    return Response([model_to_dict(d) for d in disciplines])
 
 @api_view(["GET"])
 def get_disciplines_by_courseid(request, id):
-    database_controller = database()
-    response = database_controller.get_data('cursoDisciplina', f"cursoId = {id}")
-    
-    disciplines_ids = []
-    for resp in response:
-        disciplines_ids.append(resp[2])
-
-    disciplines_bd = database_controller.get_data('disciplina', f"id in ({', '.join(map(str, disciplines_ids))})")
-    disciplines = []
-    for discipline in disciplines_bd:
-        disciplines.append(Disciplina(discipline[0], discipline[1], discipline[2]).to_dict())
-
-    return Response(json.dumps(disciplines))
+    curso = Curso.objects.get(pk=id)
+    disciplines = curso.disciplinas.all()
+    return Response([model_to_dict(d) for d in disciplines])
 
 @api_view(["GET"])
 def get_data_availability(request):
-    database_controller = database()
-    responseDayOfWeek = database_controller.get_data('diaDaSemana')
-    responseTime = database_controller.get_data('horario')
-
-    daysOfWeeks = []
-    for dayOfWeek in responseDayOfWeek:
-        daysOfWeeks.append(DiaDaSemana(dayOfWeek[0], dayOfWeek[1]).to_dict())
-
-    times = []
-    for time in responseTime:
-        times.append(Horario(time[0], time[1], time[2], time[3]).to_dict())
-
-    return Response(json.dumps({"daysOfWeeks": daysOfWeeks, "times": times}))
+    daysOfWeeks = DiaDaSemana.objects.all()
+    times = Horario.objects.all()
+    return Response({"daysOfWeeks": [model_to_dict(d) for d in daysOfWeeks], "times": [model_to_dict(t) for t in times]})
 
 @api_view(["POST"])
 def set_disciplines(request):
-    disciplina = request.data
- 
-    database_controller = database()
-    database_controller.set_data('disciplina', f"'{disciplina['descricao']}', {disciplina['carga_horaria']}", "(nome, carga_horaria)")
-    
-    return Response()
-
+    disciplina = Disciplina.objects.create(nome=request.data['nome'], carga_horaria=request.data['carga_horaria'])
+    return Response(model_to_dict(disciplina))
 
 @api_view(["GET"])
 def get_course(request):
-    database_controller = database()
-    response = database_controller.get_data('curso')
-    
-    couses = []
-    for course in response:
-        couses.append(Curso(course[0], course[1], course[2]).to_dict())
-    
-    return Response(json.dumps(couses))
+    courses = Curso.objects.all()
+    return Response([model_to_dict(c) for c in courses])
 
 @api_view(["POST"])
 def set_course(request):
-    course = request.data
- 
-    database_controller = database()
-    course_id = database_controller.set_data('curso', f"'{course['descricao']}', {course['carga_horaria']}", "(nome, carga_horaria)")
-    for disciplina in course['disciplinas']:
-        database_controller.set_data('cursoDisciplina', f"'{course_id}', {disciplina['id']}", "(cursoId, disciplinaId)")
-
-    return Response()
+    course = Curso.objects.create(nome=request.data['nome'], carga_horaria=request.data['carga_horaria'])
+    for disciplina in request.data['disciplinas']:
+        disciplina_id = disciplina['id']
+        CursoDisciplina.objects.create(curso=course, disciplina=Disciplina.objects.get(pk=disciplina_id))
+    return Response(model_to_dict(course))
 
 @api_view(["POST"])
 def set_time(request):
-    time = request.data
-    
-    database_controller = database()
-    database_controller.set_data('horario', f"'{time['descricao']}', '{time['hora_inicio']}', '{time['hora_fim']}'", "(descricao, inicio, fim)")
-    
-    return Response()
+    time = Horario.objects.create(descricao=request.data['descricao'], inicio=request.data['inicio'], fim=request.data['fim'])
+    return Response(model_to_dict(time))
 
 @api_view(["POST"])
 def set_teacher(request):
-    teacher = request.data
-    
-    database_controller = database()
-    teacher_id = database_controller.set_data('professor', f"'{teacher['nome']}'", "(nome)")
-    
-    for disponibilidade in teacher['disponibilidade']:
-        database_controller.set_data('disponibilidade', f"'{teacher_id}', {disponibilidade['diaSemana']['id']}, {disponibilidade['horario']['id']}", "(professorId, diaSemanaId, horarioId)")
-    
-    return Response()
-
-# @api_view(["POST"])
-# def creat_work_board(request):
-#     database_controller = database()
-#     data = {}
-#     data['turma'] = request.data['turma']
-#     curso = request.data['curso']
-#     print(curso)
-#     data['curso'] = Curso(curso['id'], curso['descricao'], curso['carga_horaria'])
-
-#     data['disciplinas'] = []
-#     for disciplina in request.data['disciplinas']:
-#         data['disciplinas'].append(Disciplina(disciplina['id'], disciplina['descricao'], disciplina['carga_horaria']).to_dict())
-     
-        
-
-#     return Response()
+    teacher = Professor.objects.create(nome=request.data['nome'])
+    for disponibilidade in request.data['disponibilidade']:
+        Disponibilidade.objects.create(professor=teacher, diaSemana=DiaDaSemana.objects.get(pk=disponibilidade['diaSemana']['id']), horario=Horario.objects.get(pk=disponibilidade['horario']['id']))
+    return Response(model_to_dict(teacher))
 
 @api_view(["POST"])
 def creat_work_board(request):
-    database_controller = database()
     data = {}
     data['turma'] = request.data['turma']
     curso = request.data['curso']
     print(curso)
-    data['curso'] = Curso(curso['id'], curso['descricao'], curso['carga_horaria'])
+    data['curso'] = Curso.objects.get(id=curso['id'])
 
     data['disciplinas'] = []
     for disciplina in request.data['disciplinas']:
-        data['disciplinas'].append(Disciplina(disciplina['id'], disciplina['descricao'], disciplina['carga_horaria']).to_dict())
+        data['disciplinas'].append(Disciplina.objects.get(id=disciplina['id']))
 
     # Obtenha todos os professores
-    professores = database_controller.get_data('professor')
+    professores = Professor.objects.all()
 
     # Para cada disciplina
     for disciplina in data['disciplinas']:
         # Obtenha todos os professores que podem ensinar a disciplina
-        professores_disciplina = professores.filter(cursoDisciplina__disciplinaId=disciplina['id'])
+        professores_disciplina = professores.filter(cursoDisciplina__disciplinaId=disciplina.id)
 
         # Para cada professor
         for professor in professores_disciplina:
             # Verifique se o professor está disponível no horário da aula
-            disponibilidade = Disponibilidade.objects.filter(professorId=professor.id, horarioId=aula.horarioId)
+            aulas = Aula.objects.filter(disciplinaId=disciplina.id)
+            for aula in aulas:
+                disponibilidade = Disponibilidade.objects.filter(professorId=professor.id, horarioId=aula.horarioId)
 
-            # Se o professor estiver disponível
-            if disponibilidade:
-                # Atribua a disciplina ao professor
-                Aula.objects.create(disciplinaId=disciplina['id'], professorId=professor.id, horarioId=aula.horarioId, diaSemana=aula.diaSemana, turmaId=data['turma']['id'])
+                # Se o professor estiver disponível
+                if disponibilidade:
+                    # Atribua a disciplina ao professor
+                    Aula.objects.create(disciplinaId=disciplina.id, professorId=professor.id, horarioId=aula.horarioId, diaSemana=aula.diaSemana, turmaId=data['turma']['id'])
 
-                # Remova o horário da lista de disponibilidade do professor
-                disponibilidade.delete()
+                    # Remova o horário da lista de disponibilidade do professor
+                    disponibilidade.delete()
 
-                # Saia do loop
-                break
+                    # Saia do loop
+                    break
+            else:
+                continue
+            break
         else:
             # Se não houver professores disponíveis para uma disciplina, retorne um erro
-            return Response({"error": "Não há professores disponíveis para a disciplina {}".format(disciplina['descricao'])}, status=400)
+            return Response({"error": "Não há professores disponíveis para a disciplina {}".format(disciplina.descricao)}, status=400)
 
     # Se todas as disciplinas forem atribuídas com sucesso, crie a turma
     Turma.objects.create(descricao=data['turma']['descricao'])

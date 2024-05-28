@@ -28,7 +28,7 @@ const RegisterTeacher: React.FC = () => {
         fetch(`${URL_API}/get-data-availability/`)
             .then(response => response.json())
             .then(response => {
-                const data = JSON.parse(response);
+                const data = response;
                 setTimes(data.times);
                 setDaysOfWeeks(data.daysOfWeeks);
             })
@@ -107,7 +107,7 @@ const RegisterTeacher: React.FC = () => {
         <div className="availability"> {availability && availability.length ? availability.map((item: any) => {
             return <div className="availability_data">
                 <div>{item.dayOfWeek.nome}</div>
-                <div className="availability_times">{item.times.map((time: any) => <Chip>{time.nome}</Chip>)}</div>
+                <div className="availability_times">{item.times.map((time: any) => <Chip>{time.descricao}</Chip>)}</div>
 
                 <div onClick={() => removeAvailability(item)} className="availability_close"><i className="bi bi-x"></i></div>
             </div>

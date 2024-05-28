@@ -1,16 +1,6 @@
-from .abstract_entity import AbstractEntity
+from django.db import models
+from entities.dia_da_semana import DiaDaSemana
 
-class Professor(AbstractEntity):
-    def __init__(self, id, nome,):
-        super().__init__() 
-        self.id = id
-        self.nome = nome
-    
-    def table_name(self):
-        return 'professor'
-    
-    def to_dict(self):
-        return {
-            'id': self.id,
-            'nome': self.nome,
-        }
+class Professor(models.Model):
+    nome = models.CharField(max_length=200)
+    disponibilidade = models.ManyToManyField(DiaDaSemana, through='Disponibilidade')

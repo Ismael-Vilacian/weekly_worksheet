@@ -1,23 +1,7 @@
-from database_controller import database
-from .abstract_entity import AbstractEntity
+from django.db import models
+from entities.disciplina import Disciplina
 
-class Curso(AbstractEntity):
-    def __init__(self, id, descricao, carga_horaria):
-        super().__init__() 
-        self.id = id
-        self.descricao = descricao
-        self.database_controller = database()
-        self.carga_horaria = carga_horaria
-
-        if self.table_exists() is False:
-            self.create_table()
-    
-    def table_name(self):
-        return 'Curso'
-    
-    def to_dict(self):
-        return {
-            'id': self.id,
-            'descricao': self.descricao,
-            'carga_horaria': self.carga_horaria
-        }
+class Curso(models.Model):
+    nome = models.CharField(max_length=200)
+    carga_horaria = models.IntegerField()
+    disciplinas = models.ManyToManyField(Disciplina, through='CursoDisciplina')

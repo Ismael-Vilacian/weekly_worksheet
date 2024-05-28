@@ -16,7 +16,7 @@ const RegisterCourse: React.FC = () => {
         fetch(`${URL_API}/get-disciplines/`)
             .then(response => response.json())
             .then(data => {
-                setDisciplinesData(JSON.parse(data));
+                setDisciplinesData(data);
             })
             .catch(console.log);
     }, []);
@@ -35,7 +35,7 @@ const RegisterCourse: React.FC = () => {
         loading(true);
         
         const data = {
-            descricao: inputName.value,
+            nome: inputName.value,
             carga_horaria: inputHour.value,
             disciplinas: selectedDisciplines
         }

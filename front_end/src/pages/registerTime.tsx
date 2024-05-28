@@ -23,8 +23,8 @@ const RegisterTime: React.FC = () => {
 
         const data = {
             descricao: inputNome.value,
-            hora_inicio: inputInitTime.value,
-            hora_fim: inputEndTime.value
+            inicio: inputInitTime.value,
+            fim: inputEndTime.value
         }
 
         let url = `${URL_API}/set-time/`;
