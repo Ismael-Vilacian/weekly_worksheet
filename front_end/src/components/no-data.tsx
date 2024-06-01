@@ -1,12 +1,13 @@
 import React from "react";
+import NoCourse from "../assets/svg_icons/no_course.svg";
 
 interface PropsNoData {
-    img: any;
+    img?: any;
     title: string;
     description: string;
 }
 
-const NoData: React.FC<PropsNoData> = ({ img, title, description }) => {
+const NoData: React.FC<PropsNoData> = ({ img = NoCourse, title, description }) => {
 
 
     return (

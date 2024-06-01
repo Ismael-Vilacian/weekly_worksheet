@@ -6,11 +6,9 @@ import { Events } from "../utils/events.ts";
 import CollectionEditor from "../components/collectionEditor.tsx";
 import InputSelect from "../components/input-select.tsx";
 import NoData from "../components/no-data.tsx";
-import NoCourse from "../assets/svg_icons/no_course.svg";
 import { Chip } from "../components/chip.tsx";
-import { loading, openAlert } from "../utils/tools.tsx";
+import { loading, openAlert, requestGet, requestPost } from "../utils/tools.tsx";
 import "../declarations.d.ts"
-declare var URL_API: any;
 
 const RegisterTeacher: React.FC = () => {
     const events = useMemo(() => new Events(), []);
@@ -25,14 +23,12 @@ const RegisterTeacher: React.FC = () => {
     }, [events]);
 
     useEffect(() => {
-        fetch(`${URL_API}/get-data-availability/`)
-            .then(response => response.json())
+        requestGet('get-data-availability')
             .then(response => {
                 const data = response;
                 setTimes(data.times);
                 setDaysOfWeeks(data.daysOfWeeks);
-            })
-            .catch(console.log);
+            });
     }, []);
 
     const saveCollectionEditor = () => {
@@ -66,21 +62,10 @@ const RegisterTeacher: React.FC = () => {
             disponibilidade: availabilityModel
         }
 
-        let url = `${URL_API}/set-teacher/`;
-        fetch(url, {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify(data)
-        }).then(() => {
-            loading(false);
-            openAlert('Professor cadastrado com sucesso', 'success');
-            cleanForms(inputName);
-        }).catch(() => {
-            loading(false);
-            openAlert('Erro ao cadastrar curso', 'failure');
-        });
+        requestPost('set-teacher', data, 'Professor cadastrado com sucesso')
+            .then(() => {
+                cleanForms(inputName);
+            });
     }
 
     function validadeForm(inputName) {
@@ -111,7 +96,7 @@ const RegisterTeacher: React.FC = () => {
 
                 <div onClick={() => removeAvailability(item)} className="availability_close"><i className="bi bi-x"></i></div>
             </div>
-        }) : <NoData description="Adicione as disponibilidades para poder visualizá-las" img={NoCourse} title="Nenhum disponibilidade cadastrada" />}
+        }) : <NoData description="Adicione as disponibilidades para poder visualizá-las" title="Nenhum disponibilidade cadastrada" />}
         </div>
 
     const editingContent =

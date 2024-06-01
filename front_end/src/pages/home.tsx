@@ -1,7 +1,6 @@
 import React, { useEffect, useMemo } from "react";
 import { Courses } from "../components/courses.tsx";
 import NoData from "../components/no-data.tsx";
-import NoCourse from "../assets/svg_icons/no_course.svg";
 import { Events } from "../utils/events.ts";
 
 const Home: React.FC = () => {
@@ -46,7 +45,7 @@ const Home: React.FC = () => {
         <div className="page">
             {dados && dados.length > 0 && <Courses data={dados} />}
             {(!dados || dados.length === 0) &&
-                <NoData img={NoCourse} title="Nenhum curso encontrado" description="Realize o cadastro dos cursos para visualiza-los" />
+                <NoData title="Nenhum curso encontrado" description="Realize o cadastro dos cursos para visualiza-los" />
             }
         </div>
     )

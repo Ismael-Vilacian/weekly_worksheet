@@ -1,9 +1,8 @@
 import React, { useEffect, useMemo } from "react";
 import Header from "../components/header.tsx";
 import { InputDefault } from "../components/input-default.tsx";
-import { loading, openAlert } from "../utils/tools.tsx";
+import { loading, openAlert, requestPost } from "../utils/tools.tsx";
 import { Events } from "../utils/events.ts";
-declare var URL_API: any;
 
 const RegisterTime: React.FC = () => {
     const events = useMemo(() => new Events(), []);
@@ -27,22 +26,11 @@ const RegisterTime: React.FC = () => {
             fim: inputEndTime.value
         }
 
-        let url = `${URL_API}/set-time/`;
-        fetch(url, {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify(data)
-        }).then(() => {
-            loading(false);
-            openAlert('Horario cadastrado com sucesso', 'success');
-            cleanForms(inputNome, inputInitTime, inputEndTime);
-        }).catch(() => {
-            loading(false);
-            openAlert('Erro ao cadastrar o horario', 'failure');
-        });
-
+        requestPost('set-time', data, 'Horário cadastrado com sucesso')
+            .then(() => {
+                cleanForms(inputNome, inputInitTime, inputEndTime);
+            });
+            
         function validadeForm(inputNome, inputInitTime, inputEndTime) {
             if (!inputNome.value || inputNome.value === '') {
                 openAlert('Descrição é obrigatória', 'failure');

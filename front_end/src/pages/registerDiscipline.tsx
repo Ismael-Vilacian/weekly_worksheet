@@ -1,13 +1,12 @@
 import React, { useEffect, useMemo } from "react";
 import Header from "../components/header.tsx";
 import { InputDefault } from "../components/input-default.tsx";
-import { loading, openAlert } from "../utils/tools.tsx";
+import { loading, openAlert, requestPost } from "../utils/tools.tsx";
 import { Events } from "../utils/events.ts";
-declare var URL_API: any;
 
 const RegisterDiscipline: React.FC = () => {
     const events = useMemo(() => new Events(), []);
-    
+
     useEffect(() => {
         events.publish('menuBar:setMenuBar', 'register');
     }, [events]);
@@ -25,21 +24,10 @@ const RegisterDiscipline: React.FC = () => {
             carga_horaria: inputHour.value
         }
 
-        let url = `${URL_API}/set-disciplines/`;
-        fetch(url, {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify(data)
-        }).then(() => {
-            loading(false);
-            openAlert('Disciplina cadastrado com sucesso', 'success');
-            cleanForms(inputNome, inputHour);
-        }).catch(() => {
-            loading(false);
-            openAlert('Erro ao cadastrar a disciplina', 'failure');
-        });
+        requestPost('set-disciplines', data, 'Disciplina cadastrada com sucesso')
+            .then(() => {
+                cleanForms(inputNome, inputHour);
+            });
     }
 
     function validadeForm(inputNome, inputHour) {

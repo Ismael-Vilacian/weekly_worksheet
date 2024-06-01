@@ -5,8 +5,10 @@ import Modal from "../components/modal.tsx";
 import { InputDefault } from "../components/input-default.tsx";
 import InputMultiSelect from "../components/input-multi-select.tsx";
 import InputSelect from "../components/input-select.tsx";
-import { loading, openAlert } from "../utils/tools.tsx";
-declare var URL_API: any;
+import { openAlert, requestDelete, requestGet, requestPost } from "../utils/tools.tsx";
+import NoData from "../components/no-data.tsx";
+import { CardList } from "../components/card-list.tsx";
+import TableTimes from "../components/table-times.tsx";
 
 const WorkBoardList: React.FC = () => {
     const events = useMemo(() => new Events(), []);
@@ -15,30 +17,34 @@ const WorkBoardList: React.FC = () => {
     const [disciplines, setDisciplines] = React.useState([]);
     const [couseSelected, setCourseSelected] = React.useState(null);
     const [disciplineSelected, setDisciplineSelected] = React.useState([]);
+    const [workBoards, setWorkBoards] = React.useState([]);
+    const [table, setTable] = React.useState();
 
     useEffect(() => {
-        fetch(`${URL_API}/get-course/`)
-            .then(response => response.json())
-            .then(data => {
-                setCourses(data);
-            })
-            .catch(console.log);
+        requestGet('get-course')
+            .then(data => setCourses(data));
+    }, []);
+
+
+    useEffect(() => {
+        getWorkBoards();
     }, []);
 
     useEffect(() => {
         events.publish('menuBar:setMenuBar', 'reports');
     }, [events]);
 
+    const getWorkBoards = () => {
+        requestGet('get-work-board')
+            .then(data => setWorkBoards(data));
+    }
+
     const adjustCourseDataAndGetDisciplines = (data: any) => {
         setCourseSelected(data);
         setDisciplines([]);
 
-        fetch(`${URL_API}/get-disciplines-by-courseid/${data.id}`)
-            .then(response => response.json())
-            .then(data => {
-                setDisciplines(data);
-            })
-            .catch(console.log);
+        requestGet('get-disciplines-by-courseid', true, data.id)
+            .then(data => setDisciplines(data));
     }
 
     const creatWorkBoard = () => {
@@ -52,20 +58,18 @@ const WorkBoardList: React.FC = () => {
             disciplinas: disciplineSelected
         }
 
-        let url = `${URL_API}/creat-work-board/`;
-        fetch(url, {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify(data)
-        }).then(() => {
-            loading(false);
-            openAlert('Curso cadastrado com sucesso', 'success');
-        }).catch(() => {
-            loading(false);
-            openAlert('Erro ao cadastrar curso', 'failure');
-        });
+        requestPost('creat-work-board', data, 'Quadro de trabalho criado com sucesso').then(() => {
+            setOpenModal(false);
+            getWorkBoards();
+        })
+    }
+
+    const deleteWorkBoard = (id: any) => {
+        const work = workBoards.filter((data: any) => data.turma.id !== id);
+        requestDelete(`delete-work-board`, 'Quadro de trabalho deletado com sucesso', id)
+            .then(() => {
+                setWorkBoards(work);
+            });
     }
 
     function validadeForm(inputName) {
@@ -91,6 +95,29 @@ const WorkBoardList: React.FC = () => {
     return (
         <div className="page">
             <Header description="Quadro de trabalho" action={() => setOpenModal(true)} actionDescription="Criar quadro de trabalho" iconAction="bi bi-plus-circle" />
+            {(!workBoards || workBoards.length === 0) && <NoData title="Nenhum quadro de trabalho encontrado" description="Realize o cadastro para visualiza-los" />}
+
+            {workBoards && workBoards.length > 0 &&
+                <div className="card-list">
+                    {
+                        workBoards.map((data: any) => {
+                            return (
+                                <CardList>
+                                    <div className="data-work-boards">
+                                        <div className="data-work-boards_title">{data.turma.descricao}</div>
+                                        <div>
+                                            <i onClick={() => setTable(data.turma)} className="bi bi-eye"></i>
+                                            <i onClick={() => deleteWorkBoard(data.turma.id)} className="bi bi-x"></i>
+                                        </div>
+                                    </div>
+                                </CardList>)
+                        })
+                    }
+                </div>
+            }
+
+            {table && <TableTimes dados={table} />}
+
             {openModal &&
                 <Modal title="Gerar quadro de trabalho" funcionClose={() => setOpenModal(false)}>
                     <InputDefault placeholder="Nome da turma" name="turma_name" type="text" />
