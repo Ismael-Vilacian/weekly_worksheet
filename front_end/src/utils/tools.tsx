@@ -55,6 +55,7 @@ export const requestPost = (path, body, msg) : Promise<any> => {
         }).catch(err => {
             loading(false);
             openAlert(err.message, 'failure');
+            return false;
         });
 }
 
@@ -101,5 +102,6 @@ export const requestDelete = (path, msg, params = '') : Promise<any> => {
     }).catch(err => {
         loading(false);
         openAlert(err.message, 'failure');
+        return false;
     });
 }

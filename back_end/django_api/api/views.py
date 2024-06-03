@@ -1,4 +1,7 @@
 import json
+
+from django.http import JsonResponse
+from .data_structures import quick_sort, quick_sort2
 from entities.turma import Turma
 from entities.aula import Aula
 from entities.disciplina import Disciplina
@@ -12,7 +15,8 @@ from rest_framework.decorators import api_view
 from rest_framework.response import Response
 from django.forms.models import model_to_dict
 from rest_framework import serializers
-from django.shortcuts import get_object_or_404
+from django.db.models import Subquery
+
 
 class DisciplinaSerializer(serializers.ModelSerializer):
     class Meta:
@@ -30,10 +34,13 @@ class CursoSerializer(serializers.ModelSerializer):
 def hello_world(request):
     return Response({"message": "Hello, world!"})
 
-@api_view(["GET"])
+@api_view(['GET'])
 def get_disciplines(request):
     disciplines = Disciplina.objects.all()
-    return Response([model_to_dict(d) for d in disciplines])
+    disciplines_list = list(disciplines)
+    quick_sort2(disciplines_list, 'nome', 0, len(disciplines_list)-1)
+    disciplines_list = [model_to_dict(d) for d in disciplines_list]
+    return JsonResponse(disciplines_list, safe=False)
 
 @api_view(["GET"])
 def get_disciplines_by_courseid(request, id):
@@ -50,19 +57,35 @@ def get_data_availability(request):
 @api_view(["POST"])
 def set_disciplines(request):
     disciplina = Disciplina.objects.create(nome=request.data['nome'], carga_horaria=request.data['carga_horaria'])
-    return Response(model_to_dict(disciplina))
+    return Response({"message": "Sucesso."}, status=200)
 
-@api_view(["GET"])
+@api_view(["DELETE"])
+def delete_disciplines(request, id):
+    disciplina = Disciplina.objects.get(id=id)
+    if CursoDisciplina.objects.filter(disciplina=disciplina).exists():
+        return Response({"error": "Existem cursos vinculados a esta disciplina. Não é possível deletar."}, status=400)
+    disciplina.delete()
+    return Response({"message": "Disciplina deletada com sucesso."})
+
+@api_view(['GET'])
 def get_course(request):
     courses = Curso.objects.all()
-    serializer = CursoSerializer(courses, many=True)
-    return Response(serializer.data)
+    courses_list = [model_to_dict(course) for course in courses]
+    quick_sort(courses_list, 'nome', 0, len(courses_list)-1)
+    return JsonResponse(courses_list, safe=False)
 
 @api_view(["DELETE"])
 def delete_course(request, id):
-    curso = Curso.objects.get(id= id)
-    CursoDisciplina.objects.filter(curso=curso).delete()
+    curso = Curso.objects.get(id=id)
+    curso_disciplinas = CursoDisciplina.objects.filter(curso=curso)
+
+    for curso_disciplina in curso_disciplinas:
+        if Aula.objects.filter(disciplina=curso_disciplina).exists():
+            return Response({"error": "Existem aulas vinculadas a este curso. Não é possível deletar."}, status=400)
+
+    curso_disciplinas.delete()
     curso.delete()
+
     return Response({"message": "Curso deletado com sucesso."})
 
 @api_view(["POST"])
@@ -71,19 +94,38 @@ def set_course(request):
     for disciplina in request.data['disciplinas']:
         disciplina_id = disciplina['id']
         CursoDisciplina.objects.create(curso=course, disciplina=Disciplina.objects.get(pk=disciplina_id))
-    return Response()
+    return Response({"message": "Sucesso."}, status=200)
 
 @api_view(["POST"])
 def set_time(request):
     time = Horario.objects.create(descricao=request.data['descricao'], inicio=request.data['inicio'], fim=request.data['fim'])
-    return Response()
+    return Response({"message": "Sucesso."}, status=200)
 
 @api_view(["POST"])
 def set_teacher(request):
     teacher = Professor.objects.create(nome=request.data['nome'])
     for disponibilidade in request.data['disponibilidade']:
         Disponibilidade.objects.create(professor=teacher, diaSemana=DiaDaSemana.objects.get(pk=disponibilidade['diaSemana']['id']), horario=Horario.objects.get(pk=disponibilidade['horario']['id']))
-    return Response()
+    return Response({"message": "Sucesso."}, status=200)
+
+@api_view(["GET"])
+def get_teacher(request):
+    teachers = Professor.objects.all().values('id', 'nome')
+    teachers_list = list(teachers)
+
+    if teachers.exists():
+        quick_sort(teachers_list, 'nome', 0, len(teachers_list)-1)
+
+    return Response(teachers_list)
+
+@api_view(["DELETE"])
+def delete_teacher(request, id):
+    professor = Professor.objects.get(id= id)
+    if Aula.objects.filter(professor=professor).exists():
+        return Response({"error": "Existem aulas vinculadas a este professor. Não é possível deletar."}, status=400)
+    professor.disponibilidades.all().delete()
+    professor.delete()
+    return Response({"message": "Professor deletado com sucesso."})
 
 @api_view(["GET"])
 def get_work_board(request):
@@ -179,3 +221,54 @@ def create_work_board(request):
         aula.save()
 
     return Response({"message": "Quadro de trabalho semanal criado com sucesso."}, status=200)
+
+@api_view(["GET"])
+def get_home_data(request):
+    cursos = Curso.objects.all()
+    dados_home = []
+
+    for curso in cursos:
+        curso_dict = {
+            "descricao": curso.nome,
+            "turmas": []
+        }
+        
+        disciplinas_curso = CursoDisciplina.objects.filter(curso=curso).values('disciplina')
+        turmas = Turma.objects.filter(aula__disciplina__in=Subquery(disciplinas_curso)).distinct()
+
+        for turma in turmas:
+            turma_dict = {
+                "descricao": turma.descricao,
+                "aulas": {}
+            }
+
+            aulas = Aula.objects.filter(disciplina__in=disciplinas_curso, turma=turma).select_related('disciplina', 'professor', 'horario', 'diaSemana')
+
+            for aula in aulas:
+                aula_dict = {
+                    "descricao": aula.disciplina.disciplina.nome,
+                    "professor": aula.professor.nome,
+                    "diasLetivos": []
+                }
+
+                dias_letivos = DiaDaSemana.objects.filter(aula=aula)
+
+                for dia in dias_letivos:
+                    dia_dict = {
+                        "dia": dia.nome,
+                        "horario": aula.horario.descricao,
+                        "inicio": aula.horario.inicio,
+                        "fim": aula.horario.fim
+                    }
+
+                    aula_dict["diasLetivos"].append(dia_dict)
+
+                if aula.disciplina.disciplina.nome not in turma_dict["aulas"]:
+                    turma_dict["aulas"][aula.disciplina.disciplina.nome] = []
+                turma_dict["aulas"][aula.disciplina.disciplina.nome].append(aula_dict)
+
+            curso_dict["turmas"].append(turma_dict)
+
+        dados_home.append(curso_dict)
+
+    return Response(dados_home)

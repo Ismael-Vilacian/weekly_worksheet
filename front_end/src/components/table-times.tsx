@@ -3,7 +3,7 @@ import React, { useEffect } from 'react';
 const TableTimes = ({ dados }) => {
   const [table, setTable] = React.useState({});
   const [horarios, setHorarios] = React.useState() as any;
-  const diasSemana = ['Segunda', 'Terça', 'Quarta', 'Quinta', 'Sexta'];
+  const diasSemana = ['Segunda', 'Terça', 'Quarta', 'Quinta', 'Sexta', 'Sábado'];
 
   const group = () => {
     const aulas = dados.aulas;
@@ -49,37 +49,39 @@ const TableTimes = ({ dados }) => {
   }, [dados]);
 
   return (
-    <table border={1} style={{width: '100%'}}>
-      <thead>
-        <tr>
-          <th></th>
-          {diasSemana.map((dia) => (
-            <th key={dia}>{dia}</th>
-          ))}
-        </tr>
-      </thead>
-      {table && horarios &&
-        <tbody>
-          {horarios.map((horario) => (
-            <tr key={horario}>
-              <td>{horario}</td>
-              {diasSemana.map((dia) => (
-                <td key={dia}>
-                  {table[dia] && table[dia][horario] ? (
-                    <>
-                      <p>{table[dia][horario][0].disciplina__nome}</p>
-                      <p>{table[dia][horario][0].professor__nome}</p>
-                    </>
-                  ) : (
-                    <p>-</p>
-                  )}
-                </td>
-              ))}
-            </tr>
-          ))}
-        </tbody>
-      }
-    </table>
+    <div>
+      <table>
+        <thead>
+          <tr>
+            <th></th>
+            {diasSemana.map((dia) => (
+              <th key={dia}>{dia}</th>
+            ))}
+          </tr>
+        </thead>
+        {table && horarios &&
+          <tbody>
+            {horarios.map((horario) => (
+              <tr key={horario}>
+                <td>{horario}</td>
+                {diasSemana.map((dia) => (
+                  <td key={dia}>
+                    {table[dia] && table[dia][horario] ? (
+                      <>
+                        <p className='disciplina-table'>{table[dia][horario][0].disciplina__disciplina__nome}</p>
+                        <p>{table[dia][horario][0].professor__nome}</p>
+                      </>
+                    ) : (
+                      <p>-</p>
+                    )}
+                  </td>
+                ))}
+              </tr>
+            ))}
+          </tbody>
+        }
+      </table>
+    </div>
   );
 };
 

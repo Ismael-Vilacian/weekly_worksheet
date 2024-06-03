@@ -7,14 +7,18 @@ import CollectionEditor from "../components/collectionEditor.tsx";
 import InputSelect from "../components/input-select.tsx";
 import NoData from "../components/no-data.tsx";
 import { Chip } from "../components/chip.tsx";
-import { loading, openAlert, requestGet, requestPost } from "../utils/tools.tsx";
+import { loading, openAlert, requestDelete, requestGet, requestPost } from "../utils/tools.tsx";
 import "../declarations.d.ts"
+import Modal from "../components/modal.tsx";
+import { CardList } from "../components/card-list.tsx";
 
 const RegisterTeacher: React.FC = () => {
     const events = useMemo(() => new Events(), []);
     const [daysOfWeeks, setDaysOfWeeks] = React.useState({});
     const [times, setTimes] = React.useState([]);
     const [dayOfWeekSelected, setdayOfWeekSelected] = React.useState({});
+    const [openModal, setOpenModal] = React.useState(false);
+    const [teachers, setTeachers] = React.useState([]);
     const [timeSelected, setTimeSelected] = React.useState([]) as any;
     const [availability, setAvailability] = React.useState([]) as any;
 
@@ -30,6 +34,16 @@ const RegisterTeacher: React.FC = () => {
                 setDaysOfWeeks(data.daysOfWeeks);
             });
     }, []);
+
+    useEffect(() => {
+        getTeachers()
+    }, []);
+
+
+    const getTeachers = () => {
+        requestGet('get-teacher')
+            .then(data => setTeachers(data));
+    }
 
     const saveCollectionEditor = () => {
         setAvailability([...availability, { dayOfWeek: dayOfWeekSelected as any, times: timeSelected }]);
@@ -65,6 +79,8 @@ const RegisterTeacher: React.FC = () => {
         requestPost('set-teacher', data, 'Professor cadastrado com sucesso')
             .then(() => {
                 cleanForms(inputName);
+                setOpenModal(false);
+                getTeachers();
             });
     }
 
@@ -88,6 +104,16 @@ const RegisterTeacher: React.FC = () => {
         setAvailability([]);
     }
 
+    const deleteTeacher = (id: any) => {
+        requestDelete(`delete-teacher`, 'Professor deletado com sucesso', id)
+            .then(sucesso => {
+                if (sucesso !== false) {
+                    const teacher = teachers.filter((data: any) => data.id !== id);
+                    setTeachers(teacher);
+                }
+            });
+    }
+
     const contentPresentation =
         <div className="availability"> {availability && availability.length ? availability.map((item: any) => {
             return <div className="availability_data">
@@ -107,19 +133,42 @@ const RegisterTeacher: React.FC = () => {
 
     return (
         <div className="page">
-            <Header description="Cadastro de professor" />
+            <Header description="Cadastro de professor" action={() => setOpenModal(true)} actionDescription="Adicionar professor" iconAction="bi bi-plus-circle" />
 
-            <div className="container_description">
-                <InputDefault placeholder="Nome" name="teacher_name" type="text" />
-            </div>
+            {(!teachers || teachers.length === 0) && <NoData title="Nenhuma professor encontrado" description="Realize o cadastro dos professores para visualiza-los" />}
 
-            <div>
-                <CollectionEditor change={() => saveCollectionEditor()} description="Disponibilidade" contentPresentation={contentPresentation} editingContent={editingContent} />
-            </div>
+            {teachers && teachers.length > 0 &&
+                <div className="card-list">
+                    {
+                        teachers.map((data: any) => {
+                            return (
+                                <CardList>
+                                    <div className="data-work-boards">
+                                        <div className="data-work-boards_title">{data.nome}</div>
+                                        <div>
+                                            <i onClick={() => deleteTeacher(data.id)} className="bi bi-x"></i>
+                                        </div>
+                                    </div>
+                                </CardList>)
+                        })
+                    }
+                </div>
+            }
 
-            <div style={{ textAlign: 'center', marginTop: '25px' }}>
-                <button onClick={saveTeacher} className="button-default">Salvar alterações</button>
-            </div>
+            {openModal &&
+                <Modal title="Cadastrar professor" funcionClose={() => setOpenModal(false)}>
+                    <div className="container_description">
+                        <InputDefault placeholder="Nome" name="teacher_name" type="text" />
+                    </div>
+
+                    <div>
+                        <CollectionEditor change={() => saveCollectionEditor()} description="Disponibilidade" contentPresentation={contentPresentation} editingContent={editingContent} />
+                    </div>
+
+                    <div style={{ textAlign: 'center', marginTop: '25px' }}>
+                        <button onClick={saveTeacher} className="button-default">Salvar alterações</button>
+                    </div>
+                </Modal>}
         </div>
     );
 }

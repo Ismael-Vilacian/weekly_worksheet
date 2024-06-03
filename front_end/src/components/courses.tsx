@@ -11,18 +11,24 @@ export class Courses extends React.Component<PropsCourses> {
         const { data } = this.props;
 
         return (
-          <div className="courses">
-            {data.map((curso: any) => {
+            <div className="courses">
+                {data.map((curso: any) => {
                     return (
                         <div className="courses_container">
                             <div className="courses_description">{curso.descricao}</div>
-
-                            <Subjects data={curso} />
+                            {curso.turmas.map((turma: any) => {
+                                return (
+                                    <div>
+                                        <div className="turma-descricao">{turma.descricao}</div>
+                                        <Subjects data={turma.aulas} />
+                                    </div>
+                                )
+                            })}
                         </div>
                     );
                 })}
- 
-          </div>
+
+            </div>
         )
     }
 }

@@ -22,13 +22,17 @@ const RegisterCourse: React.FC = () => {
     }, []);
 
     useEffect(() => {
-        requestGet('get-course')
-            .then(data => setCourses(data));
+        getCourse();
     }, []);
 
     useEffect(() => {
         events.publish('menuBar:setMenuBar', 'register');
     }, [events]);
+
+    const getCourse = () => {
+        requestGet('get-course')
+            .then(data => setCourses(data));
+    }
 
     const saveCourse = () => {
 
@@ -48,6 +52,8 @@ const RegisterCourse: React.FC = () => {
         requestPost('set-course', data, 'Curso cadastrado com sucesso')
             .then(() => {
                 cleanForms(inputName, inputHour);
+                setOpenModal(false);
+                getCourse();
             });
     }
 
@@ -84,9 +90,11 @@ const RegisterCourse: React.FC = () => {
 
     const deleteCourse = (id: any) => {
         requestDelete(`delete-course`, 'Curso deletado com sucesso', id)
-            .then(() => {
-                const course = courses.filter((data: any) => data.id !== id);
-                setCourses(course);
+            .then(sucesso => {
+                if (sucesso !== false) {
+                    const course = courses.filter((data: any) => data.id !== id);
+                    setCourses(course);
+                }
             });
     }
 
@@ -115,7 +123,7 @@ const RegisterCourse: React.FC = () => {
             }
 
             {openModal &&
-                <Modal title="Gerar quadro de trabalho" funcionClose={() => setOpenModal(false)}>
+                <Modal title="Cadastrar curso" funcionClose={() => setOpenModal(false)}>
                     <div className="container_description">
                         <InputDefault placeholder="Descrição" name="course_name" type="text" />
                     </div>

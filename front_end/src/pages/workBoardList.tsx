@@ -18,7 +18,7 @@ const WorkBoardList: React.FC = () => {
     const [couseSelected, setCourseSelected] = React.useState(null);
     const [disciplineSelected, setDisciplineSelected] = React.useState([]);
     const [workBoards, setWorkBoards] = React.useState([]);
-    const [table, setTable] = React.useState();
+    const [table, setTable] = React.useState() as any;
 
     useEffect(() => {
         requestGet('get-course')
@@ -58,9 +58,11 @@ const WorkBoardList: React.FC = () => {
             disciplinas: disciplineSelected
         }
 
-        requestPost('creat-work-board', data, 'Quadro de trabalho criado com sucesso').then(() => {
-            setOpenModal(false);
-            getWorkBoards();
+        requestPost('creat-work-board', data, 'Quadro de trabalho criado com sucesso').then(response => {
+            if (response !== false) {
+                setOpenModal(false);
+                getWorkBoards();
+            }
         })
     }
 
@@ -116,7 +118,13 @@ const WorkBoardList: React.FC = () => {
                 </div>
             }
 
-            {table && <TableTimes dados={table} />}
+            {table &&
+                <div className="dados-qts">
+                    <div className="tabela">
+                        <Header description={table.descricao} action={() => setTable(null)} actionDescription="Fechar" iconAction="" />
+                        <TableTimes dados={table} />
+                    </div>
+                </div>}
 
             {openModal &&
                 <Modal title="Gerar quadro de trabalho" funcionClose={() => setOpenModal(false)}>
